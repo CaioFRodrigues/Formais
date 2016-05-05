@@ -13,4 +13,5 @@ A fazer:
 • Aprender a usar git (Altere aqui quando aprender: Caio, Arateus)
 • Pesquisar sobre Earley e implementações em Python
 • Entregar o parser
+• Fazer a interface gráfica (uma textarea e um botão bonitinho já tá legal)
 • Entregar o gerador

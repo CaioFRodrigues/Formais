@@ -86,7 +86,7 @@ def parseTerms(fp):
 
         # split the string by ',', trim spaces and return as a list
         a = m.group(1).split(',')   # group(1) contains each captured group
-        a[:] = map(str.strip, a)    # trim spaces
+        a[:] = map(str.strip, a)    # trim spaces in each element of a
         return a
 
     except:
@@ -155,6 +155,10 @@ def parseRules(fp):
 
         # process each line until the end
         for line in fp:
+            # skip empty lines
+            if len(line) < 3:   # expect at least "{>}"
+                continue
+            
             # match "{ a > a, b }" etc.
             p = re.compile(r'^\{\s*(.*)\s*>\s*(.*)\s*\}\s*;?\s*(?:#.*)?$')
             m = p.match(line)
