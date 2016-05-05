@@ -35,14 +35,14 @@ import re
 class Parser:
     f=open('gramatica-exemplo.txt','r')
     readString = f.readline()
-   
+    p = re.compile("\{\s*(.+)\}")
+    b = re.compile("(.*[^\s])")
+    
     match = re.search('^Terminais',readString) 
     if match:
          readString = f.readline()
-         p = re.compile("\{\s*(.+)\s*\}")
          matchObj = p.search(readString)
-         #print "searchObj.group(0) : ", matchObj.group(0)
-         #print "searchObj.group(1) : ", matchObj.group(1)
+         matchObj = b.search(matchObj.group(1))
          terminais = re.split(",\s", matchObj.group(1))
          print terminais
          
@@ -50,10 +50,8 @@ class Parser:
     match = re.search('^Variaveis',readString) 
     if match:
          readString = f.readline()
-         p = re.compile("\{\s*(.+)\s*\}")
          matchObj = p.search(readString)
-         #print "searchObj.group(0) : ", matchObj.group(0)
-         #print "searchObj.group(1) : ", matchObj.group(1)
+         matchObj = b.search(matchObj.group(1))
          variaveis = re.split(",\s", matchObj.group(1))
          print variaveis
          
@@ -61,10 +59,8 @@ class Parser:
     match = re.search('^Inicial',readString) 
     if match:
          readString = f.readline()
-         p = re.compile("\{\s*(.+)\s*\}")
          matchObj = p.search(readString)
-         #print "searchObj.group(0) : ", matchObj.group(0)
-         #print "searchObj.group(1) : ", matchObj.group(1)
+         matchObj = b.search(matchObj.group(1))
          inicial = re.split(",\s", matchObj.group(1))
          print inicial
          
@@ -72,10 +68,8 @@ class Parser:
     match = re.search('^Regras',readString) 
     if match:
          readString = f.readline()
-         p = re.compile("\{\s*(.+)\s*> \s*(.+)\}")
          matchObj = p.search(readString)
-         #print "searchObj.group(0) : ", matchObj.group(0)
-         #print "searchObj.group(1) : ", matchObj.group(1)
+         matchObj = b.search(matchObj.group(1))
          regras = re.split(",\s", matchObj.group(1))
          print regras
     
