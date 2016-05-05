@@ -1,0 +1,16 @@
+Feito:
+• Gramática corrigida e testada
+• Interpretador de arquivos de gramática para a estrutura interna
+
+Fazendo:
+• Arateus: -
+• Caio: -
+• Cattani: -
+• Daniel: -
+
+A fazer:
+• Testar o interpretador
+• Aprender a usar git (Altere aqui quando aprender: Caio, Arateus)
+• Pesquisar sobre Earley e implementações em Python
+• Entregar o parser
+• Entregar o gerador
