@@ -7,10 +7,10 @@ import re
 Grammar type specifications:
 
 grammar is a dictionary X => Y where
-    X is 'terms', 'vars', 'start' or 'rules'
+    X is 'terms', 'rnames', 'start' or 'rules'
     Y depends on the value of X:
     'terms' => Y is a list of strings representing terminal symbols
-    'vars' => Y is a list of strings representing variables
+    'rnames' => Y is a list of strings representing variables
     'start' => Y is a string representing the starting variable
     'rules' => Y is a dictionary M => N where
         M is a string representing a variable name
@@ -21,7 +21,7 @@ grammar is a dictionary X => Y where
 class ParseError(Exception):
     """ParseError exception name declaration and messages"""
     termsMsg = 'Error parsing the terminals list!'
-    varsMsg = 'Error parsing the variables list!'
+    rnamesMsg = 'Error parsing the variables list!'
     startMsg = 'Error parsing the starting variable!'
     rulesMsg = 'Error parsing the grammar rules!'
     pass
@@ -37,13 +37,13 @@ def parseGrammarFile(fname):
 
         grammar = {
             'terms': [],    # list of terminals
-            'vars': [],     # list of variables
+            'rnames': [],     # list of variables
             'start': "",    # starting symbol
-            'rules': {},    # vars and their lists of productions
+            'rules': {},    # rnames and their lists of productions
         }
 
         grammar['terms'] = parseTerms(fp)
-        grammar['vars'] = parseVars(fp)
+        grammar['rnames'] = parseVars(fp)
         grammar['start'] = parseStart(fp)
         grammar['rules'] = parseRules(fp)
 
@@ -102,13 +102,13 @@ def parseVars(fp):
         p = re.compile(r'^Variaveis\s*(?:#.*)?$')
         m = p.match(ln)
         if m == None:
-            raise ParseError(ParseError.varsMsg)
+            raise ParseError(ParseError.rnamesMsg)
 
         ln = fp.readline()
         p = re.compile(r'^\{\s*(.*)\s*\}\s*(?:#.*)?$')
         m = p.match(ln)
         if m == None:
-            raise ParseError(ParseError.varsMsg)
+            raise ParseError(ParseError.rnamesMsg)
 
         a = m.group(1).split(',')
         a[:] = map(str.strip, a)
@@ -165,14 +165,14 @@ def parseRules(fp):
             if m == None:
                 raise ParseError(ParseError.rulesMsg)
 
-            var = m.group(1).strip()        # group(1) = var
+            rname = m.group(1).strip()      # group(1) = rname
             prods = m.group(2).split(',')   # group(2) = productions string
             prods[:] = map(str.strip, prods)
 
             # add each production to dict['variable']
-            if not var in rules.keys():     # create a new dict entry?
-                rules[var] = []
-            rules[var].append(prods)
+            if not rname in rules.keys():   # create a new dict entry?
+                rules[rname] = []
+            rules[rname].append(prods)
 
         return rules
 
