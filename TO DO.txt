@@ -1,15 +1,15 @@
 Feito:
 • Gramática corrigida e testada
 • Interpretador de arquivos de gramática para a estrutura interna
+• Testar o interpretadors
 
 Fazendo:
-• Arateus: -
-• Caio: -
-• Cattani: -
-• Daniel: -
+• Arateus: Pesquisa sobre a interface
+• Caio: Dn
+• Cattani: Dn
+• Daniel: Pesquisa sobre Earley em Python
 
 A fazer:
-• Testar o interpretador
 • Aprender a usar git (Altere aqui quando aprender: Caio, Arateus)
 • Pesquisar sobre Earley e implementações em Python
 • Entregar o parser
