@@ -44,14 +44,15 @@ Ass: Class Grupo:
 
 g = parseGrammarFile(sys.argv[1])
 
-d = [[]]                    # d is a list of d0, d1, ...
+d = []                      # d is a list of d0, d1, ...
 rulestoproc = [g['start']]  # vars to process, starting on the starting symbol
 rulesprocced = []           # vars already processed
 
+# create d0
+d.append([])
 while rulestoproc != []:        # while there are rules to process
     rule = rulestoproc.pop(0)   # take the current rule
     rulesprocced.append(rule)   # list it as processed
-    print(rule)
     for prod in g['rules'][rule]:   # for each production
         drule = {                   # add this production in grammar format to d0 in d_rule format
             'rname': rule,          # var name
@@ -61,10 +62,15 @@ while rulestoproc != []:        # while there are rules to process
             'slash': 0,             # the immutable value of "/n"
         }
         d[0].append(drule)
-        print(drule)
-        dotsymbbol = prod[ drule['dot'] ]       # symbol right after the dot
-        if ( not dotsymbbol in rulesprocced     # if it's not yet processed
-             and dotsymbbol in g['rnames'] ):   # and it's a variable
-            rulestoproc.append(prod[0])     # process it ASAP
+        dotsymbbol = prod[ drule['dot'] ]       # now take the symbol right after the dot
+        if ( dotsymbbol in g['rnames'] and      # if it's a variable
+             not dotsymbbol in rulesprocced and # not yet processed
+             not dotsymbbol in rulestoproc ):   # and not already listed to process
+            rulestoproc.append(prod[0])         # list it to process
 
 
+# print d0
+print("d0:")
+for drule in d[0]:
+    print("{ %s > %s }; nsymbols=%d; dot=%d; slash=%d" % (
+        drule['rname'], ', '.join(drule['prod']), drule['nsymbols'], drule['dot'], drule['slash']))

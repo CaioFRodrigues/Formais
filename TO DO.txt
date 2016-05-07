@@ -1,7 +1,7 @@
 Feito:
 • Gramática corrigida e testada
 • Interpretador de arquivos de gramática para a estrutura interna
-• Testar o interpretadors
+• Testar o interpretador
 
 Fazendo:
 • Arateus: Pesquisa sobre a interface

@@ -14,7 +14,7 @@ grammar is a dictionary X => Y where
     'start' => Y is a string representing the starting variable
     'rules' => Y is a dictionary M => N where
         M is a string representing a variable name
-        N is a list of strings representing productions for that variable
+        N is a set of tuples of strings representing productions for that variable
 """
 
 
@@ -37,7 +37,7 @@ def parseGrammarFile(fname):
 
         grammar = {
             'terms': [],    # list of terminals
-            'rnames': [],     # list of variables
+            'rnames': [],   # list of variables
             'start': "",    # starting symbol
             'rules': {},    # rnames and their lists of productions
         }
@@ -59,10 +59,9 @@ def parseGrammarFile(fname):
         print(error.args[0])
         exit(-1)
 
-    # treat the rest of exceptions
+    # re-raise the rest of exceptions to __main__
     except:
-        print('Unknown error!')
-        exit(-1)
+        raise
 
 
 def parseTerms(fp):
@@ -87,7 +86,7 @@ def parseTerms(fp):
         # split the string by ',', trim spaces and return as a list
         a = m.group(1).split(',')   # group(1) contains each captured group
         a[:] = map(str.strip, a)    # trim spaces in each element of a
-        return a
+        return list(set(a))         # remove duplicates
 
     except:
         # re-raise the exception to handle it in the caller
@@ -112,7 +111,7 @@ def parseVars(fp):
 
         a = m.group(1).split(',')
         a[:] = map(str.strip, a)
-        return a
+        return list(set(a))
 
     except:
         raise
@@ -168,11 +167,17 @@ def parseRules(fp):
             rname = m.group(1).strip()      # group(1) = rname
             prods = m.group(2).split(',')   # group(2) = productions string
             prods[:] = map(str.strip, prods)
+            prods = tuple(prods)            # convert it to a tuple (immutable list)
 
             # add each production to dict['variable']
             if not rname in rules.keys():   # create a new dict entry?
                 rules[rname] = []
             rules[rname].append(prods)
+            
+        # convert the lists of productions into sets of productions
+        # this is needed to guarantee unique productions for each variable
+        for rname in rules.keys():
+            rules[rname] = set(rules[rname])
 
         return rules
 
