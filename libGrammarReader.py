@@ -9,8 +9,8 @@ Grammar type specifications:
 grammar is a dictionary X => Y where
     X is 'terms', 'rnames', 'start' or 'rules'
     Y depends on the value of X:
-    'terms' => Y is a list of strings representing terminal symbols
-    'rnames' => Y is a list of strings representing variables
+    'terms' => Y is a set of strings representing terminal symbols
+    'rnames' => Y is a set of strings representing variables
     'start' => Y is a string representing the starting variable
     'rules' => Y is a dictionary M => N where
         M is a string representing a variable name
@@ -65,7 +65,7 @@ def parseGrammarFile(fname):
 
 
 def parseTerms(fp):
-    """Parse lines from a text file into the list of grammar terminals"""
+    """Parse lines from a text file into the set of grammar terminals"""
 
     try:
         # match "Terminais", with or without a comment etc., using RegEx
@@ -83,10 +83,10 @@ def parseTerms(fp):
         if m == None:
             raise ParseError(ParseError.termsMsg)
 
-        # split the string by ',', trim spaces and return as a list
+        # split the string by ',', trim spaces and return as a set
         a = m.group(1).split(',')   # group(1) contains each captured group
         a[:] = map(str.strip, a)    # trim spaces in each element of a
-        return list(set(a))         # remove duplicates
+        return set(a)               # remove duplicates
 
     except:
         # re-raise the exception to handle it in the caller
@@ -94,7 +94,7 @@ def parseTerms(fp):
 
 
 def parseVars(fp):
-    """Parse lines from a text file into the list of grammar variables"""
+    """Parse lines from a text file into the set of grammar variables"""
 
     try:
         ln = fp.readline()
@@ -111,7 +111,7 @@ def parseVars(fp):
 
         a = m.group(1).split(',')
         a[:] = map(str.strip, a)
-        return list(set(a))
+        return set(a)
 
     except:
         raise
