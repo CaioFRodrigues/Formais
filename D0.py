@@ -17,11 +17,11 @@ A > .the /0
 
 '''
 d[0] => [
-			{rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
-			{rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
-			{rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
-			{rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
-		]
+            {rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
+            {rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
+            {rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
+            {rname (string), prod (list of strings), nsymbols (int), dot (int), slash (int)},
+        ]
 
 d0 é uma lista de dicionários, onde cada um é como tá aí em cima
 '''
@@ -39,30 +39,32 @@ VP > .the   ==> {rname: 'VP', prod: ['the'], nsymbols: 1, dot: 0, slash: 0}
 Cattani, por favor, pare de usar classes
 Assim fica mais c00l
 Ass: Class Grupo:
-			__init__(foda-se) xD
+            __init__(foda-se) xD
 '''
+
+g = parseGrammarFile(sys.argv[1])
 
 d = [[]]                    # d is a list of d0, d1, ...
 rulestoproc = [g['start']]  # vars to process, starting on the starting symbol
 rulesprocced = []           # vars already processed
 
 while rulestoproc != []:        # while there are rules to process
-	rule = rulestoproc.pop(0)   # take the current rule
-	rulesprocced.append(rule)   # list it as processed
-	print(rule)
-	for prod in g['rules'][rule]:   # for each production
+    rule = rulestoproc.pop(0)   # take the current rule
+    rulesprocced.append(rule)   # list it as processed
+    print(rule)
+    for prod in g['rules'][rule]:   # for each production
         drule = {                   # add this production in grammar format to d0 in d_rule format
-			'rname': rule,          # var name
-			'prod': prod,           # current production
-			'nsymbols': len(prod),  # number of symbols in the production
-			'dot': 0,               # index of the string in the production that comes after the •
-			'slash': 0,             # the immutable value of "/n"
-		}
-		d[0].append(drule)
-		print(drule)
-        dotsymbbol = prod[ drule['dot'] ]
-		if not dotsymbbol in rulesprocced   # if the symbol after the dot is not yet processed
-           and dotsymbbol in g['rnames']:   # and it's a variable
-			rulestoproc.append(prod[0])     # process it ASAP
+            'rname': rule,          # var name
+            'prod': prod,           # current production
+            'nsymbols': len(prod),  # number of symbols in the production
+            'dot': 0,               # index of the string in the production that comes after the •
+            'slash': 0,             # the immutable value of "/n"
+        }
+        d[0].append(drule)
+        print(drule)
+        dotsymbbol = prod[ drule['dot'] ]       # symbol right after the dot
+        if ( not dotsymbbol in rulesprocced     # if it's not yet processed
+             and dotsymbbol in g['rnames'] ):   # and it's a variable
+            rulestoproc.append(prod[0])     # process it ASAP
 
 
