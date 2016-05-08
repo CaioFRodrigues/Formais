@@ -35,20 +35,20 @@ def parseGrammarFile(fname):
     try:
         fp = open(fname, 'r')
 
-        grammar = {
+        g = {
             'terms': [],    # list of terminals
             'rnames': [],   # list of variables
             'start': "",    # starting symbol
             'rules': {},    # rnames and their lists of productions
         }
 
-        grammar['terms'] = parseTerms(fp)
-        grammar['rnames'] = parseVars(fp)
-        grammar['start'] = parseStart(fp)
-        grammar['rules'] = parseRules(fp)
+        g['terms'] = parseTerms(fp)
+        g['rnames'] = parseVars(fp)
+        g['start'] = parseStart(fp)
+        g['rules'] = parseRules(fp)
 
         fp.close()
-        return grammar
+        return g
 
     # treat specific exceptions
     except FileNotFoundError:
