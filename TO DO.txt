@@ -2,16 +2,18 @@ Feito:
 • Gramática corrigida e testada
 • Interpretador de arquivos de gramática para a estrutura interna
 • Testar o interpretador
+• Pesquisar sobre Earley e implementações em Python
 
 Fazendo:
 • Arateus: Pesquisa sobre a interface
-• Caio: Dn
-• Cattani: Dn
-• Daniel: Pesquisa sobre Earley em Python
+• Caio: Árvore de derivação
+• Cattani: Árvore de derivação
+• Daniel: Árvore de derivação
 
 A fazer:
 • Aprender a usar git (Altere aqui quando aprender: Caio, Arateus)
-• Pesquisar sobre Earley e implementações em Python
+• Testar o parser
+• Gerar a árvore de derivação
 • Entregar o parser
-• Fazer a interface gráfica (uma textarea e um botão bonitinho já tá legal)
+• Fazer a interface gráfica
 • Entregar o gerador
