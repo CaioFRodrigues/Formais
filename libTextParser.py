@@ -65,7 +65,8 @@ def expandFromGrammar(g, dset, slash, s):
                 'dot': 0,                   # index of the string in the production that comes after the •,
                 'slash': slash,             # and the immutable value of "/n"
             }
-            dset.append(drule)
+            if not drule in dset:
+                dset.append(drule)
             dotsymbbol = prod[ drule['dot'] ]       # now take the symbol right after the dot
             if(dotsymbbol in g['rnames'] and        # if it's a variable
                not dotsymbbol in rulesprocced and   # not yet processed
@@ -78,9 +79,10 @@ def expandFromGrammar(g, dset, slash, s):
 def advanceDot(g, drule, d, n):
     """Copy a drule to the current dset advancing the dot and propagating to other drules"""
 
-    newdrule = drule.copy() # do it this way, otherwise you're copying a pointer
-    newdrule['dot'] += 1    # advance the dot
-    d[n].append(newdrule)   # copy to the current dset
+    newdrule = drule.copy()     # do it this way, otherwise you're copying a pointer
+    newdrule['dot'] += 1        # advance the dot
+    if not newdrule in d[n]:
+        d[n].append(newdrule)   # copy to the current dset
 
     if newdrule['dot'] == newdrule['nsymbols']:         # the dot reached the end of the drule
         slash = newdrule['slash']
