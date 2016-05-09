@@ -51,8 +51,10 @@ def parseText(g, text):
 
 
 def expandFromGrammar(g, dset, slash, s):
-    rulestoproc = [s]       # vars to process
-    rulesprocced = []       # vars already processed
+    """Expand a drule from the grammar in the current dset"""
+
+    rulestoproc = [s]   # vars to process
+    rulesprocced = []   # vars already processed
 
     while rulestoproc != []:        # while there are rules to process
         rule = rulestoproc.pop(0)   # take the current rule
