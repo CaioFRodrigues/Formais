@@ -40,6 +40,7 @@ def parseText(g, text):
                 continue
             if drule['prod'][dot] == rsymbol:       # if this drule has the current word after the dot
                 d[n] = advanceDot(g, drule, d, n)   # advance the dot and propagate this all around dn
+                drule['hist'].append(rsymbol)       # add the terminal to the history
 
     # to accept the text, we must have a drule in the last dset with:
     accepts = []
@@ -67,13 +68,13 @@ def expandFromGrammar(g, dset, slash, s):
         rule = rulestoproc.pop(0)   # take the current rule
         rulesprocced.append(rule)   # list it as processed
         for prod in g['rules'][rule]:   # for each production
-            drule = {                   # add this production in grammar format to d0 in d_rule format:
+            drule = {                   # add this production in grammar format to d0 in drule format:
                 'rname': rule,              # var name,
                 'prod': prod,               # current production,
                 'nsymbols': len(prod),      # number of symbols in the production,
-                'dot': 0,                   # index of the string in the production that comes after the •,
+                'dot': 0,                   # index of the string in the production that comes after the dot,
                 'slash': slash,             # the immutable value of "/n"
-                'hist': [],                 # and the empty list of generated drule pointers
+                'hist': [],                 # and the empty list of generated drule "pointers"
             }
             if not drule in dset:
                 dset.append(drule)
@@ -89,7 +90,7 @@ def expandFromGrammar(g, dset, slash, s):
 def advanceDot(g, drule, d, n):
     """Copy a drule to the current dset advancing the dot and propagating to other drules"""
 
-    newdrule = drule.copy()     # do it this way, otherwise you're copying a pointer
+    newdrule = drule.copy()     # do it this way, otherwise you're copying a "pointer"
     newdrule['dot'] += 1        # advance the dot
     if not newdrule in d[n]:
         d[n].append(newdrule)   # copy to the current dset
