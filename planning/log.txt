@@ -1,0 +1,47 @@
+>>>RunMeParser.py data\example_ok.txt "the cat barks"
+d =
+[
+    [
+        {'prod': ('NP', 'VP'), 'hist': [{'prod': ('DT', 'N'), 'hist': [{'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 1, 'slash': 0, 'nsymbols': 1}, {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'NP', 'dot': 2, 'slash': 0, 'nsymbols': 2}, {'prod': ('barks',), 'hist': [], 'rname': 'VP', 'dot': 1, 'slash': 2, 'nsymbols': 1}], 'rname': 'S', 'dot': 0, 'slash': 0, 'nsymbols': 2},
+        {'prod': ('DT', 'N'), 'hist': [{'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 1, 'slash': 0, 'nsymbols': 1}, {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'NP', 'dot': 0, 'slash': 0, 'nsymbols': 2},
+        {'prod': ('a',), 'hist': [], 'rname': 'DT', 'dot': 0, 'slash': 0, 'nsymbols': 1},
+        {'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 0, 'slash': 0, 'nsymbols': 1}
+    ],
+    [
+        {'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 1, 'slash': 0, 'nsymbols': 1},
+        {'prod': ('DT', 'N'), 'hist': [{'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 1, 'slash': 0, 'nsymbols': 1}, {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'NP', 'dot': 1, 'slash': 0, 'nsymbols': 2},
+        {'prod': ('coffee',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 1, 'nsymbols': 1},
+        {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 1, 'nsymbols': 1},
+        {'prod': ('machine',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 1, 'nsymbols': 1},
+        {'prod': ('espresso',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 1, 'nsymbols': 1},
+        {'prod': ('N', 'N'), 'hist': [{'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'N', 'dot': 0, 'slash': 1, 'nsymbols': 2}
+    ],
+    [
+        {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1},
+        {'prod': ('DT', 'N'), 'hist': [{'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 1, 'slash': 0, 'nsymbols': 1}, {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'NP', 'dot': 2, 'slash': 0, 'nsymbols': 2},
+        {'prod': ('NP', 'VP'), 'hist': [{'prod': ('DT', 'N'), 'hist': [{'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 1, 'slash': 0, 'nsymbols': 1}, {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'NP', 'dot': 2, 'slash': 0, 'nsymbols': 2}, {'prod': ('barks',), 'hist': [], 'rname': 'VP', 'dot': 1, 'slash': 2, 'nsymbols': 1}], 'rname': 'S', 'dot': 1, 'slash': 0, 'nsymbols': 2},
+        {'prod': ('V', 'NP'), 'hist': [{'prod': ('barks',), 'hist': [], 'rname': 'V', 'dot': 1, 'slash': 2, 'nsymbols': 1}], 'rname': 'VP', 'dot': 0, 'slash': 2, 'nsymbols': 2},
+        {'prod': ('runs',), 'hist': [], 'rname': 'VP', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('eats',), 'hist': [], 'rname': 'VP', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('barks',), 'hist': [], 'rname': 'VP', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('runs',), 'hist': [], 'rname': 'V', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('eats',), 'hist': [], 'rname': 'V', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('barks',), 'hist': [], 'rname': 'V', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('N', 'N'), 'hist': [{'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 2},
+        {'prod': ('coffee',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('machine',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('espresso',), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('N', 'N'), 'hist': [], 'rname': 'N', 'dot': 0, 'slash': 2, 'nsymbols': 2}
+    ],
+    [
+        {'prod': ('barks',), 'hist': [], 'rname': 'VP', 'dot': 1, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('NP', 'VP'), 'hist': [{'prod': ('DT', 'N'), 'hist': [{'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 1, 'slash': 0, 'nsymbols': 1}, {'prod': ('cat',), 'hist': [], 'rname': 'N', 'dot': 1, 'slash': 1, 'nsymbols': 1}], 'rname': 'NP', 'dot': 2, 'slash': 0, 'nsymbols': 2}, {'prod': ('barks',), 'hist': [], 'rname': 'VP', 'dot': 1, 'slash': 2, 'nsymbols': 1}], 'rname': 'S', 'dot': 2, 'slash': 0, 'nsymbols': 2},
+        {'prod': ('barks',), 'hist': [], 'rname': 'V', 'dot': 1, 'slash': 2, 'nsymbols': 1},
+        {'prod': ('V', 'NP'), 'hist': [{'prod': ('barks',), 'hist': [], 'rname': 'V', 'dot': 1, 'slash': 2, 'nsymbols': 1}], 'rname': 'VP', 'dot': 1, 'slash': 2, 'nsymbols': 2},
+        {'prod': ('DT', 'N'), 'hist': [], 'rname': 'NP', 'dot': 0, 'slash': 3, 'nsymbols': 2},
+        {'prod': ('a',), 'hist': [], 'rname': 'DT', 'dot': 0, 'slash': 3, 'nsymbols': 1},
+        {'prod': ('the',), 'hist': [], 'rname': 'DT', 'dot': 0, 'slash': 3, 'nsymbols': 1}
+    ]
+]
+Text accepted!

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from libGrammarReader import *
-
 
 """
 d and dset type specifications:
@@ -18,6 +16,7 @@ a drule is a dictionary X => Y where
     'nsymbols' => Y is an int representing the number of symbols in the production
     'dot' => Y is an int representing the position of the dot in the production
     'slash' => Y is an int representing the value of the '/n' in the end of the drule
+    'hist' => Y is a list of drules corresponding to the expanded variables of the production
 """
 
 
@@ -26,6 +25,8 @@ def parseText(g, text):
 
     t = text.split()
     t[:] = map(str.strip, t)    # strip spaces from each word in the text
+    if len(t) == 0:
+        return False
 
     d = [ [] for _ in t ]                               # d is a list of dsets: d[0], d[1], ..., d[len(t) - 1]
     d.append( [] )                                      # we need a d[len(t)] as well
@@ -65,7 +66,8 @@ def expandFromGrammar(g, dset, slash, s):
                 'prod': prod,               # current production,
                 'nsymbols': len(prod),      # number of symbols in the production,
                 'dot': 0,                   # index of the string in the production that comes after the •,
-                'slash': slash,             # and the immutable value of "/n"
+                'slash': slash,             # the immutable value of "/n"
+                'hist': [],                 # and the empty list of generated drule pointers
             }
             if not drule in dset:
                 dset.append(drule)
@@ -87,9 +89,7 @@ def advanceDot(g, drule, d, n):
         d[n].append(newdrule)   # copy to the current dset
 
     if newdrule['dot'] == newdrule['nsymbols']:         # the dot reached the end of the drule
-        slash = newdrule['slash']
-        rname = newdrule['rname']
-        d[n] = expandFromSlash(g, d, n, slash, rname)   # expand it from the slash dset
+        d[n] = expandFromSlash(g, d, n, newdrule)       # expand it from the slash dset
     else:
         nextsymbol = newdrule['prod'][ newdrule['dot'] ]
         if nextsymbol in g['rnames']:                           # the dot reached a variable
@@ -98,14 +98,17 @@ def advanceDot(g, drule, d, n):
     return d[n]
 
 
-def expandFromSlash(g, d, n, slash, rname):
+def expandFromSlash(g, d, n, newdrule):
     """Copy to dn all the drules in d[slash] that had rname after the dot, advancing the dot"""
 
-    for drule in d[slash]:                  # look in the slash dset
+    newslash = newdrule['slash']
+    newrname = newdrule['rname']
+    for drule in d[newslash]:               # look in the slash dset
         dot = drule['dot']
         if dot == drule['nsymbols']:        # this drule is already finished, skip it
             continue
-        if drule['prod'][dot] == rname:     # if this drule has the finished var after the dot
+        if drule['prod'][dot] == newrname:  # if this drule has the finished var after the dot
             advanceDot(g, drule, d, n)      # advance the dot and propagate this all around dn
+            drule['hist'].append(newdrule)  # add the generating rule to the history
 
     return d[n]
