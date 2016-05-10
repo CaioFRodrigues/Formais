@@ -42,13 +42,19 @@ def parseText(g, text):
                 d[n] = advanceDot(g, drule, d, n)   # advance the dot and propagate this all around dn
 
     # to accept the text, we must have a drule in the last dset with:
+    accepts = []
     for drule in d[n]:
         if(drule['rname'] == g['start'] and         # rname as starting symbol,
            drule['dot'] == drule['nsymbols'] and    # the dot in the end of the production,
            drule['slash'] == 0):                    # and it must end with /0
-            return True
+            accepts.append(drule)
 
-    return False
+    if len(accepts) > 0:        # we may have more than one tree
+        for drule in accepts:
+            printTree(drule)    # print each of them
+        return True
+    else:
+        return False
 
 
 def expandFromGrammar(g, dset, slash, s):
@@ -112,3 +118,8 @@ def expandFromSlash(g, d, n, newdrule):
             drule['hist'].append(newdrule)  # add the generating rule to the history
 
     return d[n]
+
+
+def printTree(drule):
+    """Print the derivation tree for an accepting drule"""
+    pass
