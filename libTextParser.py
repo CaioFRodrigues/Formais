@@ -49,10 +49,15 @@ def parseText(g, text):
            drule['dot'] == drule['nsymbols'] and    # the dot in the end of the production,
            drule['slash'] == 0):                    # and it must end with /0
             accepts.append(drule)
-
+	
     if len(accepts) > 0:        # we may have more than one tree
+        f = open('output.txt', 'w')
+        f2 = open('outputsimple.txt', 'w')
         for drule in accepts:
-            printTree(drule)    # print each of them
+            printTree(drule, 0, f)    # print each of them
+            printTreeSimple(drule, 0, f2)    # print the simpler version
+		
+        f.close()
         return True
     else:
         return False
@@ -121,6 +126,24 @@ def expandFromSlash(g, d, n, newdrule):
     return d[n]
 
 
-def printTree(drule):
+def printTree(drule, level, file):
     """Print the derivation tree for an accepting drule"""
-    pass
+	
+    file.write(level*4*' '+'rname:'+str(drule['rname'])+'\n')
+    file.write(level*4*' '+'prod'+str(drule['prod'])+'\n')
+    file.write(level*4*' '+'nsymbols:'+str(drule['nsymbols'])+'\n')
+    file.write(level*4*' '+'dot:'+str(drule['dot'])+'\n')
+    file.write(level*4*' '+'slash:'+str(drule['slash'])+'\n')
+    file.write(level*4*' '+'hist:\n'+level*4*' '+'{\n')
+    if len(drule['hist']) > 1:
+        for item in drule['hist']:
+	        printTree(item,level+1,file)
+    file.write(level*4*' '+'}\n')
+
+def printTreeSimple(drule, level, file):
+    """Print a simpler derivation tree of the accepting drule"""
+
+    file.write(level*4*' '+str(drule['rname'])+'\n')
+    if len(drule['hist']) > 1:
+        for item in drule['hist']:
+	        printTreeSimple(item,level+1,file)
