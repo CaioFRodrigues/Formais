@@ -28,7 +28,15 @@ class ParseError(Exception):
 
 
 def parseGrammarFile(fname):
-    """Open and parse a text file into a grammar type"""
+    """
+    Open and parse a text file into a grammar type
+
+    Keyword arguments:
+        fname = string describing the name of the grammar file
+
+    Return value:
+        g = the interpreted grammar in grammar format
+    """
 
     # if anything goes wrong, skip the rest of the block
     # to know more, search for 'python exception handling'
@@ -65,7 +73,15 @@ def parseGrammarFile(fname):
 
 
 def parseTerms(fp):
-    """Parse lines from a text file into the set of grammar terminals"""
+    """
+    Parse lines from a text file into the set of grammar terminals
+
+    Keyword arguments:
+        fp = handle to the open grammar file
+
+    Return value:
+        set containing the list of terminal strings
+    """
 
     try:
         # match "Terminais", with or without a comment etc., using RegEx
@@ -94,7 +110,15 @@ def parseTerms(fp):
 
 
 def parseVars(fp):
-    """Parse lines from a text file into the set of grammar variables"""
+    """
+    Parse lines from a text file into the set of grammar variables
+
+    Keyword arguments:
+        fp = handle to the open grammar file
+
+    Return value:
+        set containing the list of variable names
+    """
 
     try:
         ln = fp.readline()
@@ -118,7 +142,15 @@ def parseVars(fp):
 
 
 def parseStart(fp):
-    """Parse lines from a text file into the starting variable"""
+    """
+    Parse lines from a text file into the starting variable
+
+    Keyword arguments:
+        fp = handle to the open grammar file
+
+    Return value:
+        string representing the starting variable name
+    """
 
     try:
         ln = fp.readline()
@@ -141,7 +173,15 @@ def parseStart(fp):
 
 
 def parseRules(fp):
-    """Parse lines from a text file into the grammar rules"""
+    """
+    Parse lines from a text file into the grammar rules
+
+    Keyword arguments:
+        fp = handle to the open grammar file
+
+    Return value:
+        rules = dictionary with variable names and their productions
+    """
 
     try:
         ln = fp.readline()
