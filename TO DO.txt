@@ -11,7 +11,7 @@ Fazendo:
 • Daniel: Árvore de derivação
 
 A fazer:
-• Aprender a usar git (Altere aqui quando aprender: Caio, Arateus)
+• Aprender a usar git (Altere aqui quando aprender: Arateus)
 • Testar o parser
 • Gerar a árvore de derivação
 • Entregar o parser

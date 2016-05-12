@@ -1,40 +1,43 @@
 rname:S
-prod('NP', 'VP')
+prod:('NP', 'VP')
 nsymbols:2
 dot:2
 slash:0
 hist:
 {
     rname:NP
-    prod('DT', 'N')
+    prod:('DT', 'N')
     nsymbols:2
     dot:2
     slash:0
     hist:
     {
         rname:DT
-        prod('the',)
+        prod:('the',)
         nsymbols:1
         dot:1
         slash:0
         hist:
         {
+            the
         }
         rname:N
-        prod('cat',)
+        prod:('cat',)
         nsymbols:1
         dot:1
         slash:1
         hist:
         {
+            cat
         }
     }
     rname:VP
-    prod('barks',)
+    prod:('barks',)
     nsymbols:1
     dot:1
     slash:2
     hist:
     {
+        barks
     }
 }
