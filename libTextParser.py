@@ -21,7 +21,13 @@ a drule is a dictionary X => Y where
 
 
 def parseText(g, text):
-    """Determine whether or not a text can be produced by a grammar, using the Earley algorithm"""
+    """
+    Determine whether or not a text can be produced by a grammar, using the Earley algorithm.
+
+    Keyword arguments:
+        g = grammar
+        text = string to be parsed
+    """
 
     t = text.split()
     t[:] = map(str.strip, t)    # strip spaces from each word in the text
@@ -51,20 +57,22 @@ def parseText(g, text):
             accepts.append(drule)
 	
     if len(accepts) > 0:        # we may have more than one tree
-        f = open('output.txt', 'w')
-        f2 = open('outputsimple.txt', 'w')
         for drule in accepts:
-            printTree(drule, 0, f)    # print each of them
-            printTreeSimple(drule, 0, f2)    # print the simpler version
-		
-        f.close()
+            printTree(drule, 0)    # print the simpler version
         return True
     else:
         return False
 
 
 def expandFromGrammar(g, dset, slash, s):
-    """Expand a drule from the grammar in the current dset"""
+    """Expand a drule from the grammar in the current dset
+
+    Keyword arguments:
+        g = grammar
+        dset = list of drules
+        slash = integer describing a dset index
+        s = string describing the first variable to be expanded
+    """
 
     rulestoproc = [s]   # vars to process
     rulesprocced = []   # vars already processed
@@ -93,7 +101,14 @@ def expandFromGrammar(g, dset, slash, s):
 
 
 def advanceDot(g, drule, d, n):
-    """Copy a drule to the current dset advancing the dot and propagating to other drules"""
+    """Copy a drule to the current dset advancing the dot and propagating to other drules
+
+    Keyword arguments:
+        g = grammar
+        drule = dictionary describing a rule in a dset
+        d = list of dsets
+        n = integer describing a dset index
+    """
 
     newdrule = drule.copy()     # do it this way, otherwise you're copying a "pointer"
     newdrule['dot'] += 1        # advance the dot
@@ -110,44 +125,40 @@ def advanceDot(g, drule, d, n):
     return d[n]
 
 
-def expandFromSlash(g, d, n, newdrule):
-    """Copy to dn all the drules in d[slash] that had rname after the dot, advancing the dot"""
+def expandFromSlash(g, d, n, drule):
+    """Copy to dn all the drules in d[slash] that had rname after the dot, advancing the dot
 
-    newslash = newdrule['slash']
-    newrname = newdrule['rname']
+    Keyword arguments:
+        g = grammar
+        d = list of dsets
+        n = integer describing a dset index
+        drule = dictionary describing a generating rule in a dset
+    """
+
+    newslash = drule['slash']
+    newrname = drule['rname']
     for drule in d[newslash]:               # look in the slash dset
         dot = drule['dot']
         if dot == drule['nsymbols']:        # this drule is already finished, skip it
             continue
         if drule['prod'][dot] == newrname:  # if this drule has the finished var after the dot
             advanceDot(g, drule, d, n)      # advance the dot and propagate this all around dn
-            drule['hist'].append(newdrule)  # add the generating rule to the history
+            drule['hist'].append(drule)     # add the generating rule to the history
 
     return d[n]
 
 
-def printTree(drule, level, file):
-    """Print the derivation tree for an accepting drule"""
-	
-    file.write(level*4*' '+'rname:'+drule['rname']+'\n')
-    file.write(level*4*' '+'prod:'+str(drule['prod'])+'\n')
-    file.write(level*4*' '+'nsymbols:'+str(drule['nsymbols'])+'\n')
-    file.write(level*4*' '+'dot:'+str(drule['dot'])+'\n')
-    file.write(level*4*' '+'slash:'+str(drule['slash'])+'\n')
-    file.write(level*4*' '+'hist:\n'+level*4*' '+'{\n')
-    for item in drule['hist']:
-        if isinstance(item,str): 
-            file.write((level+1)*4*' '+item+'\n')
-        else:
-            printTree(item,level+1,file)
-    file.write(level*4*' '+'}\n')
+def printTree(drule, indent):
+    """Print a derivation tree for the accepting drule
 
-def printTreeSimple(drule, level, file):
-    """Print a simpler derivation tree of the accepting drule"""
+    Keyword arguments:
+        drule = dictionary describing a rule in a dset
+        indent = integer used to indent the output
+    """
 
-    file.write(level*4*' '+drule['rname']+'\n')
+    print(indent*4*' ' + drule['rname'])
     for item in drule['hist']:
-        if isinstance(item,str):
-            file.write((level+1)*4*' '+item+'\n')
+        if isinstance(item, str):
+            print((indent+1)*4*' ' + item)
         else:
-            printTreeSimple(item,level+1,file)
+            printTree(item, indent+1)
