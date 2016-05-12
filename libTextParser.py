@@ -22,11 +22,15 @@ a drule is a dictionary X => Y where
 
 def parseText(g, text):
     """
-    Determine whether or not a text can be produced by a grammar, using the Earley algorithm.
+    Determine whether or not a text can be produced by a grammar, using the Earley algorithm
 
     Keyword arguments:
         g = grammar
         text = string to be parsed
+
+    Return value:
+        bool = whether or not text was accepted as a sentence of g
+        str = derivation tree(s) if accepted
     """
 
     t = text.split()
@@ -65,13 +69,17 @@ def parseText(g, text):
 
 
 def expandFromGrammar(g, dset, slash, s):
-    """Expand a drule from the grammar in the current dset
+    """
+    Expand a drule from the grammar in the current dset
 
     Keyword arguments:
         g = grammar
         dset = list of drules
         slash = integer describing a dset index
         s = string describing the first variable to be expanded
+
+    Return value:
+        dset = new dset after expanding from the grammar
     """
 
     rulestoproc = [s]   # vars to process
@@ -101,13 +109,17 @@ def expandFromGrammar(g, dset, slash, s):
 
 
 def advanceDot(g, drule, d, n):
-    """Copy a drule to the current dset advancing the dot and propagating to other drules
+    """
+    Copy a drule to the current dset advancing the dot and propagating to other drules
 
     Keyword arguments:
         g = grammar
         drule = dictionary describing a rule in a dset
         d = list of dsets
         n = integer describing a dset index
+
+    Return value:
+        d[n] = new dset after advancing the dot and propagating to the other rules
     """
 
     newdrule = drule.copy()     # do it this way, otherwise you're copying a "pointer"
@@ -126,13 +138,17 @@ def advanceDot(g, drule, d, n):
 
 
 def expandFromSlash(g, d, n, drule):
-    """Copy to dn all the drules in d[slash] that had rname after the dot, advancing the dot
+    """
+    Copy to dn all the drules in d[slash] that had rname after the dot, advancing the dot
 
     Keyword arguments:
         g = grammar
         d = list of dsets
         n = integer describing a dset index
         drule = dictionary describing a generating rule in a dset
+
+    Return value:
+        d[n] = new dset after advancing the dot and propagating to the other rules
     """
 
     newslash = drule['slash']
@@ -149,11 +165,15 @@ def expandFromSlash(g, d, n, drule):
 
 
 def printTree(drule, indent):
-    """Print a derivation tree for the accepting drule
+    """
+    Print a derivation tree for the accepting drule
 
     Keyword arguments:
         drule = dictionary describing a rule in a dset
         indent = integer used to indent the output
+
+    Return value:
+        str = string with all the derivation trees
     """
 
     print(indent*4*' ' + drule['rname'])
