@@ -12,7 +12,8 @@ if len(sys.argv) != 3:
 g = parseGrammarFile(sys.argv[1])
 b = parseText(g, sys.argv[2])
 
-if b:
+if isinstance(b, str):
+    print (b)
     print('Text accepted!')
 else:
     print('Text rejected!')

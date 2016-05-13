@@ -59,11 +59,8 @@ def parseText(g, text):
            drule['dot'] == drule['nsymbols'] and    # the dot in the end of the production,
            drule['slash'] == 0):                    # and it must end with /0
             accepts.append(drule)
-	
     if len(accepts) > 0:        # we may have more than one tree
-        for drule in accepts:
-            printTree(drule, 0)    # print the simpler version
-        return True
+        return returnAllTrees(accepts)
     else:
         return False
 
@@ -137,7 +134,7 @@ def advanceDot(g, drule, d, n):
     return d[n]
 
 
-def expandFromSlash(g, d, n, drule):
+def expandFromSlash(g, d, n, newdrule):
     """
     Copy to dn all the drules in d[slash] that had rname after the dot, advancing the dot
 
@@ -145,25 +142,46 @@ def expandFromSlash(g, d, n, drule):
         g = grammar
         d = list of dsets
         n = integer describing a dset index
-        drule = dictionary describing a generating rule in a dset
+        newdrule = dictionary describing a generating rule in a dset
 
     Return value:
         d[n] = new dset after advancing the dot and propagating to the other rules
     """
 
-    newslash = drule['slash']
-    newrname = drule['rname']
+    newslash = newdrule['slash']
+    newrname = newdrule['rname']
     for drule in d[newslash]:               # look in the slash dset
         dot = drule['dot']
         if dot == drule['nsymbols']:        # this drule is already finished, skip it
             continue
         if drule['prod'][dot] == newrname:  # if this drule has the finished var after the dot
             advanceDot(g, drule, d, n)      # advance the dot and propagate this all around dn
-            drule['hist'].append(drule)     # add the generating rule to the history
+            drule['hist'].append(newdrule)     # add the generating rule to the history
 
     return d[n]
 
+def  returnAllTrees(accepts):
+    """
+    Print all the derivation trees for the accepting drule
 
+    Keyword arguments:
+        accepts = all the drules accepted by parseText
+
+    Return value:
+        str = string with all the derivation trees
+    """
+    strtree = ""    #initialize type as string
+    if len(accepts) > 1:    #if accepts has more than one tree that starts with g['start']
+        for n in enumerate(accepts, start=1):
+            strtree +="Arvore "+n+":\n"
+            for drule in accepts:
+                strtree += printTree(drule, 0)
+    else:
+        for drule in accepts: #if it doesn't
+            strtree += printTree(drule, 0)
+        
+    return strtree
+     
 def printTree(drule, indent):
     """
     Print a derivation tree for the accepting drule
@@ -175,10 +193,10 @@ def printTree(drule, indent):
     Return value:
         str = string with all the derivation trees
     """
-
-    print(indent*4*' ' + drule['rname'])
-    for item in drule['hist']:
-        if isinstance(item, str):
-            print((indent+1)*4*' ' + item)
+    temp = indent*4*' ' + drule['rname']    
+    for item in drule['hist']:  #search this rname's history
+        if isinstance(item, str):   
+            temp +='\n'+(indent+1)*4*' ' + item #test if what is left is a string, if it is, just concatenate
         else:
-            printTree(item, indent+1)
+            temp += '\n'+printTree(item, indent+1) #else start a recursion
+    return temp #returns a string that is going to be concatenated
