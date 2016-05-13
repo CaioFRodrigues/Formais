@@ -10,10 +10,10 @@ if len(sys.argv) != 3:
     exit(1)
 
 g = parseGrammarFile(sys.argv[1])
-b = parseText(g, sys.argv[2])
+stringTree, bool = parseText(g, sys.argv[2])
 
-if isinstance(b, str):
-    print (b)
+if bool:
     print('Text accepted!')
+    print (stringTree)
 else:
     print('Text rejected!')

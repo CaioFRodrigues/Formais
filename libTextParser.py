@@ -60,7 +60,7 @@ def parseText(g, text):
            drule['slash'] == 0):                    # and it must end with /0
             accepts.append(drule)
     if len(accepts) > 0:        # we may have more than one tree
-        return returnAllTrees(accepts)
+        return returnAllTrees(accepts), True
     else:
         return False
 
@@ -172,19 +172,18 @@ def  returnAllTrees(accepts):
     """
     strtree = ""    #initialize type as string
     if len(accepts) > 1:    #if accepts has more than one tree that starts with g['start']
-        for n in enumerate(accepts, start=1):
-            strtree +="Arvore "+n+":\n"
-            for drule in accepts:
-                strtree += printTree(drule, 0)
+        for n,drule in enumerate(accepts, start=1):
+            strtree +="\nArvore "+str(n)+":\n"
+            strtree += generateTree(drule, 0)
     else:
         for drule in accepts: #if it doesn't
-            strtree += printTree(drule, 0)
+            strtree += generateTree(drule, 0)
         
     return strtree
      
-def printTree(drule, indent):
+def generateTree(drule, indent):
     """
-    Print a derivation tree for the accepting drule
+    Generate a derivation tree for the accepting drule
 
     Keyword arguments:
         drule = dictionary describing a rule in a dset
@@ -198,5 +197,5 @@ def printTree(drule, indent):
         if isinstance(item, str):   
             temp +='\n'+(indent+1)*4*' ' + item #test if what is left is a string, if it is, just concatenate
         else:
-            temp += '\n'+printTree(item, indent+1) #else start a recursion
+            temp += '\n'+generateTree(item, indent+1) #else start a recursion
     return temp #returns a string that is going to be concatenated
