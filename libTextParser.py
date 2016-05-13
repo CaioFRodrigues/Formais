@@ -36,7 +36,7 @@ def parseText(g, text):
     t = text.split()
     t[:] = map(str.strip, t)    # strip spaces from each word in the text
     if len(t) == 0:
-        return False
+        return False, ""
 
     d = [ [] for _ in t ]                               # d is a list of dsets: d[0], d[1], ..., d[len(t) - 1]
     d.append( [] )                                      # we need a d[len(t)] as well
@@ -60,9 +60,10 @@ def parseText(g, text):
            drule['slash'] == 0):                    # and it must end with /0
             accepts.append(drule)
     if len(accepts) > 0:        # we may have more than one tree
-        return returnAllTrees(accepts), True
+        strtrees = generateAllTrees(accepts)
+        return True, strtrees
     else:
-        return False
+        return False, ""
 
 
 def expandFromGrammar(g, dset, slash, s):
@@ -156,34 +157,38 @@ def expandFromSlash(g, d, n, newdrule):
             continue
         if drule['prod'][dot] == newrname:  # if this drule has the finished var after the dot
             advanceDot(g, drule, d, n)      # advance the dot and propagate this all around dn
-            drule['hist'].append(newdrule)     # add the generating rule to the history
+            drule['hist'].append(newdrule)  # add the generating rule to the history
 
     return d[n]
 
-def  returnAllTrees(accepts):
+
+def generateAllTrees(accepts):
     """
-    Print all the derivation trees for the accepting drule
+    Generate all the derivation trees for the accepted drules
 
     Keyword arguments:
-        accepts = all the drules accepted by parseText
+        accepts = set of all the drules accepted by parseText
 
     Return value:
         str = string with all the derivation trees
     """
-    strtree = ""    #initialize type as string
-    if len(accepts) > 1:    #if accepts has more than one tree that starts with g['start']
-        for n,drule in enumerate(accepts, start=1):
-            strtree +="\nArvore "+str(n)+":\n"
-            strtree += generateTree(drule, 0)
+
+    strtrees = ""
+    if len(accepts) > 1:                                # we may have more than one tree
+        for n, drule in enumerate(accepts, start=1):
+            strtrees +="\n\nArvore " + str(n) + ":\n"   # generate them all, numbered
+            strtrees += generateTree(drule, 0)
     else:
-        for drule in accepts: #if it doesn't
-            strtree += generateTree(drule, 0)
-        
-    return strtree
-     
+        strtrees +="\n\nArvore:\n"
+        for drule in accepts:
+            strtrees += generateTree(drule, 0)          # otherwise, generate just this one
+
+    return strtrees
+
+
 def generateTree(drule, indent):
     """
-    Generate a derivation tree for the accepting drule
+    Generate a derivation tree for the accepted drule
 
     Keyword arguments:
         drule = dictionary describing a rule in a dset
@@ -192,10 +197,12 @@ def generateTree(drule, indent):
     Return value:
         str = string with all the derivation trees
     """
-    temp = indent*4*' ' + drule['rname']    
-    for item in drule['hist']:  #search this rname's history
-        if isinstance(item, str):   
-            temp +='\n'+(indent+1)*4*' ' + item #test if what is left is a string, if it is, just concatenate
+
+    strtree = indent*4*' ' + drule['rname']                 # concatenate the rname
+    for item in drule['hist']:                              # go through this rule's history
+        if isinstance(item, str):                           # test if it's a string
+            strtree += '\n' + (indent+1)*4*' ' + item       # if it is, just concatenate
         else:
-            temp += '\n'+generateTree(item, indent+1) #else start a recursion
-    return temp #returns a string that is going to be concatenated
+            strtree += '\n' + generateTree(item, indent+1)  # else, start a higher-level recursion
+
+    return strtree
