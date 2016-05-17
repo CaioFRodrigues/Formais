@@ -14,7 +14,7 @@ grammar is a dictionary X => Y where
     'start' => Y is a string representing the starting variable
     'rules' => Y is a dictionary M => N where
         M is a string representing a variable name
-        N is a set of tuples of strings representing productions for that variable
+        N is a list of tuples of strings representing productions for that variable
 """
 
 
@@ -58,11 +58,7 @@ def parseGrammarFile(fname):
         fp.close()
         return g
 
-    # treat specific exceptions
-    except FileNotFoundError:
-        print('File not found!')
-        exit(-1)
-
+    # TODO: this must go on __main__
     except ParseError as error:
         print(error.args[0])
         exit(-1)
@@ -214,10 +210,9 @@ def parseRules(fp):
                 rules[rname] = []
             rules[rname].append(prods)
             
-        # convert the lists of productions into sets of productions
-        # this is needed to guarantee unique productions for each variable
+        # remove duplicate productions
         for rname in rules.keys():
-            rules[rname] = set(rules[rname])
+            rules[rname] = list(set(rules[rname]))
 
         return rules
 
