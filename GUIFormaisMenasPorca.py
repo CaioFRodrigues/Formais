@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 from tkinter import *
+import tkinter.filedialog as fdialog
 from functools import partial
 from RunMeParserGUI import RunMeParserFunc
 from libGrammarReader import parseGrammarFile
@@ -32,24 +34,27 @@ def returnMainScreen(frame1, window):
     mainFunc(window)
 
 
-def btAccRecLanClick(texto, enTex, recFrame, window):
+def btAccRecLanClick(texto, filePath, enTex, recFrame, window):
     texto = enTex.get()
     # print(enTex.get())
     # print(texto)
-    RETORNO = RunMeParserFunc(texto)
-    # lbTextinho = Label(recFrame, text=RETORNO).grid(row=3, column=0, columnspan=5)
-    # print(RETORNO)
-    # textFrame = Frame(recFrame)
-    # textFrame.grid(row = 3)
+    if filePath:
+        RETORNO = RunMeParserFunc(texto, filePath['file'].name)
+        # lbTextinho = Label(recFrame, text=RETORNO).grid(row=3, column=0, columnspan=5)
+        # print(RETORNO)
+        # textFrame = Frame(recFrame)
+        # textFrame.grid(row = 3)
 
-    scr = Scrollbar(recFrame, orient=VERTICAL)
-    scr.grid(row=2, column=3, sticky=NS)
-    texty = Text(recFrame, wrap=WORD, yscrollcommand=scr.set)
-    texty.grid(row=2, sticky = W)
-    scr.config(command = texty.yview)
-    texty.insert(INSERT, RETORNO)
-    texty["state"] = DISABLED
-
+        scr = Scrollbar(recFrame, orient=VERTICAL)
+        scr.grid(row=2, column=3, sticky=NS)
+        texty = Text(recFrame, wrap=WORD, yscrollcommand=scr.set)
+        texty.grid(row=2, sticky = W)
+        scr.config(command = texty.yview)
+        texty.insert(INSERT, RETORNO)
+        texty["state"] = DISABLED
+        
+    return
+    
 # command for the bt1 button
 def RecLangFunc(Frame1, Frame2, window):
     Frame1.destroy()
@@ -59,18 +64,39 @@ def RecLangFunc(Frame1, Frame2, window):
     recFrame.grid(row=0, column=0, ipadx=600, ipady=400)
 
     labelQuestion = Label(recFrame, text="Enter your Language:")
-    labelQuestion.grid(row=0, column=0, sticky=W)
+    labelQuestion.grid(row=0, column=0, pady=2, sticky=W)
+    
+    labelFile = Label(recFrame, text="Current file:")
+    labelFile.grid(row=1, column=0, pady=2, sticky=W)
 
     enText = Entry(recFrame, borderwidth="2")
     enText.place(x=120,y=1)
-
+    
+    filePath ={}
+    
+    fileText = Text(recFrame, borderwidth="2",height=1, width=20)
+    fileText.place(x=70,y=25)
+    
+    btFileOpen = Button(recFrame, text="Search", command= partial(getFilename, fileText, filePath))
+    btFileOpen.place(x=225,y=20)
+    
     texto = ""
-    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, texto, enText, recFrame, window))
-    btAccRecLan.place(x=245,y=0)
-
+    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, texto, filePath, enText, recFrame, window))
+    btAccRecLan.place(x=245,y=0,height=20)
+    
     btReturn = Button(recFrame, text="Return", command=partial(returnMainScreen, recFrame, window))
     btReturn.place(x=590, y=0)
 
+def getFilename(fileText, filePath):
+    filePath['file'] = fdialog.askopenfile(mode='r',defaultextension='txt', title="Find the gramatic to be parsed...")
+    if len(filePath) > 0:
+        fileText.delete('1.0',END)
+        fileText.insert('end', filePath['file'].name)
+    else:
+        fileText.delete('1.0',END)
+        fileText.insert('end', "File not found!")
+    return
+    
 def genInfomercial(Frame1, Frame2, window):
     Frame1.destroy()
     Frame2.destroy()
@@ -88,7 +114,7 @@ def genInfomercial(Frame1, Frame2, window):
     infomercial = Text(genFrame,  wrap=WORD, height = "12", width = "81")
     infomercial.grid(row=0, column=0)
 
-def btInfoFunc():
+#def btInfoFunc():
 
 
 
