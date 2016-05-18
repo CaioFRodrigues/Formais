@@ -20,51 +20,83 @@ def mainFunc(window):
     # creating the buttons objects
     bt1 = Button(bottomFrame, text="Reconize Language", fg="black",
                  command=partial(RecLangFunc, bottomFrame, introFrame, window))
-    bt2 = Button(bottomFrame, text="Generate Infomercial!", fg="red4")
+    bt2 = Button(bottomFrame, text="Generate Infomercial!", fg="red4", command=partial(genInfomercial, bottomFrame, introFrame, window))
 
     # put the buttons at their right positions
     bt1.pack(side=LEFT)
     bt2.pack(side=RIGHT)
 
-def btAccRecLanClick(texto, enTex, recFrame):
+
+def returnMainScreen(frame1, window):
+    frame1.destroy()
+    mainFunc(window)
+
+
+def btAccRecLanClick(texto, enTex, recFrame, window):
     texto = enTex.get()
-    print(enTex.get())
-    print(texto)
+    # print(enTex.get())
+    # print(texto)
     RETORNO = RunMeParserFunc(texto)
     # lbTextinho = Label(recFrame, text=RETORNO).grid(row=3, column=0, columnspan=5)
-    print(RETORNO)
-    textFrame = Frame(recFrame)
-    textFrame.grid(row = 3)
-    scr = Scrollbar(textFrame, orient=VERTICAL)
-    scr.grid(row=5, column=3, sticky=E)
-    texty = Text(textFrame, wrap=WORD, yscrollcommand=scr.set)
-    texty.grid(row=5, sticky = NS)
+    # print(RETORNO)
+    # textFrame = Frame(recFrame)
+    # textFrame.grid(row = 3)
+
+    scr = Scrollbar(recFrame, orient=VERTICAL)
+    scr.grid(row=2, column=3, sticky=NS)
+    texty = Text(recFrame, wrap=WORD, yscrollcommand=scr.set)
+    texty.grid(row=2, sticky = W)
     scr.config(command = texty.yview)
     texty.insert(INSERT, RETORNO)
+    texty["state"] = DISABLED
 
 # command for the bt1 button
-def RecLangFunc(Frame1, Frame2, wind):
+def RecLangFunc(Frame1, Frame2, window):
     Frame1.destroy()
     Frame2.destroy()
 
-    recFrame = Frame(wind)
-    recFrame.grid(row=0, column=0, columnspan=5, rowspan=8)
+    recFrame = Frame(window)
+    recFrame.grid(row=0, column=0, ipadx=600, ipady=400)
 
     labelQuestion = Label(recFrame, text="Enter your Language:")
     labelQuestion.grid(row=0, column=0, sticky=W)
 
     enText = Entry(recFrame, borderwidth="2")
-    enText.grid(row=0, column=1)
+    enText.place(x=120,y=1)
 
     texto = ""
-    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, texto, enText, recFrame))
-    btAccRecLan.grid(row=0, column=2)
+    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, texto, enText, recFrame, window))
+    btAccRecLan.place(x=245,y=0)
+
+    btReturn = Button(recFrame, text="Return", command=partial(returnMainScreen, recFrame, window))
+    btReturn.place(x=590, y=0)
+
+def genInfomercial(Frame1, Frame2, window):
+    Frame1.destroy()
+    Frame2.destroy()
+
+    genFrame = Frame(window)
+    genFrame.grid(row=0, column=0, ipadx=600, ipady=400, rowspan=8, columnspan=10)
+
+    butThereIsMore = PhotoImage(file = "More.gif")
+    btInfo = Button(genFrame)
+    btInfo.image = butThereIsMore
+    btInfo.configure(image = butThereIsMore)
+    btInfo.place(x=2, y=210)
+    # btInfo.config()
+
+    infomercial = Text(genFrame,  wrap=WORD, height = "12", width = "81")
+    infomercial.grid(row=0, column=0)
+
+def btInfoFunc():
+
+
 
 
 # create window
 w = Tk()
 
-# w.resizable(0,0) #forbid resizing
+w.resizable(0,0) #forbid resizing
 
 # insert a title on the window
 w.title("Infomercial Generator")
@@ -73,7 +105,7 @@ w.title("Infomercial Generator")
 w["bg"] = "ghost white"
 
 # size of the window: Pt_Br (Largura x Altura + DistEsquerda + DistTopo) -> pixels
-w.geometry("1000x600+200+200")
+w.geometry("660x410+200+200")
 
 mainFunc(w)
 
