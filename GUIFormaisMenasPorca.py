@@ -3,9 +3,12 @@ from tkinter import *
 import tkinter.filedialog as fdialog
 from functools import partial
 from RunMeParserGUI import RunMeParserFunc
+from RunMeGenGUI import RunMeGenFunc
 from libGrammarReader import parseGrammarFile
 from libTextParser import parseText
 
+#main function
+# window -> Tk
 def mainFunc(window):
     # creates the intro Frame block
     introFrame = Frame(window)
@@ -20,26 +23,27 @@ def mainFunc(window):
     bottomFrame.pack(side=BOTTOM)
 
     # creating the buttons objects
-    bt1 = Button(bottomFrame, text="Reconize Language", fg="black",
-                 command=partial(RecLangFunc, bottomFrame, introFrame, window))
+    bt1 = Button(bottomFrame, text="Reconize Language", fg="black", command=partial(RecLangFunc, bottomFrame, introFrame, window))
     bt2 = Button(bottomFrame, text="Generate Infomercial!", fg="red4", command=partial(genInfomercial, bottomFrame, introFrame, window))
 
     # put the buttons at their right positions
     bt1.pack(side=LEFT)
     bt2.pack(side=RIGHT)
 
-
-def returnMainScreen(frame1, window):
-    frame1.destroy()
+# Function to return to the main screen
+# Frame1 -> Frame
+# window -> Tk()
+def returnMainScreen(Frame1, window):
+    Frame1.destroy()
     mainFunc(window)
 
-
-def btAccRecLanClick(texto, filePath, enTex, recFrame, window):
-    texto = enTex.get()
+# Function to reconize the button click from the Reconize Language screen and generate the tree
+def btAccRecLanClick(text, filePath, enTex, recFrame, window):
+    text = enTex.get()
     # print(enTex.get())
     # print(texto)
     if filePath:
-        RETORNO = RunMeParserFunc(texto, filePath['file'].name)
+        RETORNO = RunMeParserFunc(text, filePath['file'].name)
         # lbTextinho = Label(recFrame, text=RETORNO).grid(row=3, column=0, columnspan=5)
         # print(RETORNO)
         # textFrame = Frame(recFrame)
@@ -56,6 +60,10 @@ def btAccRecLanClick(texto, filePath, enTex, recFrame, window):
     return
     
 # command for the bt1 button
+# Reconize Language
+# Frame1 -> Frame
+# Frame2 -> Frame
+# window -> Tk()
 def RecLangFunc(Frame1, Frame2, window):
     Frame1.destroy()
     Frame2.destroy()
@@ -80,13 +88,16 @@ def RecLangFunc(Frame1, Frame2, window):
     btFileOpen = Button(recFrame, text="Search", command= partial(getFilename, fileText, filePath))
     btFileOpen.place(x=225,y=20)
     
-    texto = ""
-    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, texto, filePath, enText, recFrame, window))
+    text = ""
+    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, text, filePath, enText, recFrame, window))
     btAccRecLan.place(x=245,y=0,height=20)
     
     btReturn = Button(recFrame, text="Return", command=partial(returnMainScreen, recFrame, window))
     btReturn.place(x=590, y=0)
 
+# Function to get the file
+# fileText -> Text()
+# filePath -> {}
 def getFilename(fileText, filePath):
     filePath['file'] = fdialog.askopenfile(mode='r',defaultextension='txt', title="Find the gramatic to be parsed...")
     if len(filePath) > 0:
@@ -96,7 +107,11 @@ def getFilename(fileText, filePath):
         fileText.delete('1.0',END)
         fileText.insert('end', "File not found!")
     return
-    
+
+# Function to generate the random infomercial
+# Frame1 -> Frame
+# Frame2 -> Frame
+# window -> Tk()
 def genInfomercial(Frame1, Frame2, window):
     Frame1.destroy()
     Frame2.destroy()
@@ -104,18 +119,25 @@ def genInfomercial(Frame1, Frame2, window):
     genFrame = Frame(window)
     genFrame.grid(row=0, column=0, ipadx=600, ipady=400, rowspan=8, columnspan=10)
 
+    btInfoFunc(genFrame)
+
     butThereIsMore = PhotoImage(file = "More.gif")
-    btInfo = Button(genFrame)
+    btInfo = Button(genFrame, comman = partial(btInfoFunc, genFrame))
     btInfo.image = butThereIsMore
     btInfo.configure(image = butThereIsMore)
     btInfo.place(x=2, y=210)
-    # btInfo.config()
 
+    btReturn = Button(genFrame, text="Return", command=partial(returnMainScreen, genFrame, window))
+    btReturn.place(x=590, y=380)
+
+# Function to show the text generator on the box Text
+# genFrame -> Frame
+def btInfoFunc(genFrame):
     infomercial = Text(genFrame,  wrap=WORD, height = "12", width = "81")
     infomercial.grid(row=0, column=0)
-
-#def btInfoFunc():
-
+    generator = RunMeGenFunc()
+    infomercial.insert(INSERT, generator)
+    infomercial["state"] = DISABLED
 
 
 
