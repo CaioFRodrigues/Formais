@@ -3,7 +3,7 @@ from libTextGen import genText
 
 # func to send the text to the GUI
 
-def RunMeGenFunc():
-    g = parseGrammarFile("gramatica.txt")
+def RunMeGenFunc(filePath):
+    g = parseGrammarFile(filePath)
     text = genText(g)
     return text

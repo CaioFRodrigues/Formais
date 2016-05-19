@@ -7,6 +7,7 @@ from libTextParser import parseText
 # main function created from RunMeParser
 # uses as parameter:
 #   text -> aux string
+#   filePatch -> {}
 def RunMeParserFunc(text, filePath):
     # if len(sys.argv) != 3:
     #     print("Usage: %s gramatica.txt \"text to parse\" " % os.path.basename(sys.argv[0]))

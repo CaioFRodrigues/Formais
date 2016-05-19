@@ -30,12 +30,15 @@ def mainFunc(window):
     bt1.pack(side=LEFT)
     bt2.pack(side=RIGHT)
 
+    return
+
 # Function to return to the main screen
 # Frame1 -> Frame
 # window -> Tk()
 def returnMainScreen(Frame1, window):
     Frame1.destroy()
     mainFunc(window)
+    return
 
 # Function to reconize the button click from the Reconize Language screen and generate the tree
 def btAccRecLanClick(text, filePath, enTex, recFrame, window):
@@ -95,6 +98,8 @@ def RecLangFunc(Frame1, Frame2, window):
     btReturn = Button(recFrame, text="Return", command=partial(returnMainScreen, recFrame, window))
     btReturn.place(x=590, y=0)
 
+    return
+
 # Function to get the file
 # fileText -> Text()
 # filePath -> {}
@@ -119,25 +124,40 @@ def genInfomercial(Frame1, Frame2, window):
     genFrame = Frame(window)
     genFrame.grid(row=0, column=0, ipadx=600, ipady=400, rowspan=8, columnspan=10)
 
-    btInfoFunc(genFrame)
+    labelFile = Label(genFrame, text="Current file:")
+    labelFile.grid(row=0, column=0, pady=2, sticky=W)
+
+    filePath = {}
+
+    fileText = Text(genFrame, borderwidth="2", height=1, width=20)
+    fileText.place(x=68, y=2)
+
+    btFileOpen = Button(genFrame, text="Search", command=partial(getFilename, fileText, filePath))
+    btFileOpen.place(x=233, y=0)
+
+    # btInfoFunc(genFrame)
 
     butThereIsMore = PhotoImage(file = "More.gif")
-    btInfo = Button(genFrame, comman = partial(btInfoFunc, genFrame))
+    btInfo = Button(genFrame, comman = partial(btInfoFunc, genFrame, filePath))
     btInfo.image = butThereIsMore
     btInfo.configure(image = butThereIsMore)
-    btInfo.place(x=2, y=210)
+    btInfo.place(x=150, y=215)
 
     btReturn = Button(genFrame, text="Return", command=partial(returnMainScreen, genFrame, window))
     btReturn.place(x=590, y=380)
 
+    return
+
 # Function to show the text generator on the box Text
 # genFrame -> Frame
-def btInfoFunc(genFrame):
-    infomercial = Text(genFrame,  wrap=WORD, height = "12", width = "81")
-    infomercial.grid(row=0, column=0)
-    generator = RunMeGenFunc()
-    infomercial.insert(INSERT, generator)
-    infomercial["state"] = DISABLED
+def btInfoFunc(genFrame, filePath):
+    if filePath:
+        infomercial = Text(genFrame,  wrap=WORD, height = "11", width = "81")
+        infomercial.grid(row=1, column=0)
+        generator = RunMeGenFunc(filePath['file'].name)
+        infomercial.insert(INSERT, generator)
+        infomercial["state"] = DISABLED
+    return
 
 
 
