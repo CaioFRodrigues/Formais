@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import random
+from libExcept import *
 
 
 def genText(g):
@@ -13,6 +14,9 @@ def genText(g):
     Return value:
         text = string representing the generated text
     """
+
+    if not g:
+        raise GrammarError
 
     text = [ g['start'] ]                       # start with the starting variable
     while set(text).intersection(g['rnames']):  # while there are vars in the text

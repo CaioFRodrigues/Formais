@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import re
+from libExcept import *
 
 
 """
@@ -16,15 +17,6 @@ grammar is a dictionary X => Y where
         M is a string representing a variable name
         N is a list of tuples of strings representing productions for that variable
 """
-
-
-class ParseError(Exception):
-    """ParseError exception name declaration and messages"""
-    termsMsg = 'Error parsing the terminals list!'
-    rnamesMsg = 'Error parsing the variables list!'
-    startMsg = 'Error parsing the starting variable!'
-    rulesMsg = 'Error parsing the grammar rules!'
-    pass
 
 
 def parseGrammarFile(fname):
@@ -58,12 +50,7 @@ def parseGrammarFile(fname):
         fp.close()
         return g
 
-    # TODO: this must go on __main__
-    except ParseError as error:
-        print(error.args[0])
-        exit(-1)
-
-    # re-raise the rest of exceptions to __main__
+    # re-raise to __main__
     except:
         raise
 

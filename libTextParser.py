@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from libExcept import *
+
 
 """
 d and dset type specifications:
@@ -32,6 +34,9 @@ def parseText(g, text):
         bool = whether or not text was accepted as a sentence of g
         str = derivation tree(s) if accepted
     """
+
+    if not g:
+        raise GrammarError
 
     t = text.split()
     t[:] = map(str.strip, t)    # strip spaces from each word in the text
@@ -176,10 +181,10 @@ def generateAllTrees(accepts):
     strtrees = ""
     if len(accepts) > 1:                                # we may have more than one tree
         for n, drule in enumerate(accepts, start=1):
-            strtrees +="\n\nArvore " + str(n) + ":\n"   # generate them all, numbered
+            strtrees +="\n\nTree no. " + str(n) + ":\n"   # generate them all, numbered
             strtrees += generateTree(drule, 0)
     else:
-        strtrees +="\n\nArvore:\n"
+        strtrees +="\n\nTree:\n"
         for drule in accepts:
             strtrees += generateTree(drule, 0)          # otherwise, generate just this one
 

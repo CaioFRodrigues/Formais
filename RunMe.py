@@ -3,45 +3,48 @@
 from tkinter import *
 import tkinter.filedialog as fdialog
 from functools import partial
-from libGrammarReader import parseGrammarFile
-from libTextParser import parseText
-from libTextGen import genText
+import libGrammarReader
+import libTextParser
+import libTextGen
+from libExcept import *
 
 
 # main function created from RunMeParser
 # uses as parameter:
 #   text -> aux string
-#   filePatch -> {}
-def RunMeParserFunc(text, filePath):
-    # if len(sys.argv) != 3:
-    #     print("Usage: %s gramatica.txt \"text to parse\" " % os.path.basename(sys.argv[0]))
-    #     exit(1)
-
-    g = parseGrammarFile(filePath)
-    acc, trees = parseText(g, text)
-
-    if acc:
-        return 'Text accepted!' + trees
-    else:
-        return 'Text rejected!'
+#   g -> grammar
+def RunMeParserFunc(text, g):
+    try:
+        acc, trees = libTextParser.parseText(g, text)
+        if acc:
+            return 'Text accepted!' + trees
+        else:
+            return 'Text rejected!'
+    except:
+        # TODO: open a dialog saying the grammar is invalid
+        return 'Invalid grammar!'
 
 
 # func to send the text to the GUI
-def RunMeGenFunc(filePath):
-    g = parseGrammarFile(filePath)
-    text = genText(g)
-    return text
+#   g -> grammar
+def RunMeGenFunc(g):
+    try:
+        text = libTextGen.genText(g)
+        return text
+    except:
+        # TODO: open a dialog saying the grammar is invalid
+        return 'Invalid grammar!'
 
 
-#main function
+# main function
 # window -> Tk
 def mainFunc(window):
     # creates the intro Frame block
     introFrame = Frame(window)
     introFrame.pack()
     
-    #create the main logo
-#    img = PhotoImage(file="images\\earley.gif")   # convert the Image object into a TkPhoto object
+    # create the main logo
+#    img = PhotoImage(file="img\\earley.gif")   # convert the Image object into a TkPhoto object
 #    imgsmaller=img.subsample(2, 2)
 #    earleyImage = Label(introFrame, image=imgsmaller)    # put it in the display window
 #    earleyImage.pack()
@@ -83,7 +86,7 @@ def btAccRecLanClick(text, filePath, enTex, recFrame, window, showTreeArea):
     # print(enTex.get())
     # print(texto)
     if filePath:
-        tree = RunMeParserFunc(text, filePath['file'].name)
+        tree = RunMeParserFunc(text, g)
         # lbTextinho = Label(recFrame, text=RETORNO).grid(row=3, column=0, columnspan=5)
         # print(RETORNO)
         # textFrame = Frame(recFrame)
@@ -148,15 +151,15 @@ def createaboutWindow():
     aboutWindow.geometry("450x250+200+200")
     aboutWindow.title("About")
     aboutWindow.resizable(0,0)
-    msg= Label(aboutWindow, text="Earley Parser v.05\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
+    msg= Label(aboutWindow, text="Earley Parser v0.5\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
     msg.grid(row=0,column=0, columnspan=3)
     
-    #im = Image.open('images\ufrgs.png').convert2byte()# open image and convert to byte format
-    img = PhotoImage(file="images\\inf.gif")   # convert the Image object into a TkPhoto object
+    #im = Image.open('img\ufrgs.png').convert2byte()# open image and convert to byte format
+    img = PhotoImage(file="img\\inf.gif")   # convert the Image object into a TkPhoto object
     infImage = Label(aboutWindow, image=img)    # put it in the display window
     infImage.grid(row=1,column=0)
     
-    img2 = PhotoImage(file="images\\ufrgs.gif")   # convert the Image object into a TkPhoto object
+    img2 = PhotoImage(file="img\\ufrgs.gif")   # convert the Image object into a TkPhoto object
     img2smaller=img2.subsample(2, 2)
     ufrgsImage = Label(aboutWindow, image=img2smaller)    # put it in the display window
     ufrgsImage.grid(row=1,column=1)   
@@ -168,11 +171,17 @@ def createaboutWindow():
 # fileText -> Text()
 # filePath -> {}
 def getFilename(fileText, filePath):
+    global g
     filePath['file'] = fdialog.askopenfile(mode='r',defaultextension='txt', title="Find the gramatic to be parsed...")
     fileText["state"] = NORMAL
     if filePath['file']:
         fileText.delete('1.0',END)
-        fileText.insert('end', filePath['file'].name)
+        try:
+            g = libGrammarReader.parseGrammarFile(filePath['file'].name)
+            fileText.insert('end', filePath['file'].name)
+        except ParseError as error:
+            g = {}
+            fileText.insert('end', error.args[0])
     else:
         fileText.delete('1.0',END)
         fileText.insert('end', "File not found!")
@@ -209,7 +218,7 @@ def genInfomercial(Frame1, Frame2, window):
 
     # btInfoFunc(genFrame)
 
-    butThereIsMore = PhotoImage(file = "More.gif")
+    butThereIsMore = PhotoImage(file = "img\\More.gif")
     btInfo = Button(genFrame, comman = partial(btInfoFunc, genFrame, filePath, infomercialText))
     btInfo.image = butThereIsMore
     btInfo.configure(image = butThereIsMore)
@@ -225,7 +234,7 @@ def genInfomercial(Frame1, Frame2, window):
 # genFrame -> Frame
 def btInfoFunc(genFrame, filePath, infoText):
     if filePath:
-        generator = RunMeGenFunc(filePath['file'].name)
+        generator = RunMeGenFunc(g)
         infoText["state"] = NORMAL
         infoText.delete('1.0',END)
         infoText.insert(INSERT, generator)
@@ -237,7 +246,7 @@ def btInfoFunc(genFrame, filePath, infoText):
 # create window
 w = Tk()
 
-w.resizable(0,0) #forbid resizing
+w.resizable(0,0) # forbid resizing
 
 # insert a title on the window
 w.title("Infomercial Generator")
