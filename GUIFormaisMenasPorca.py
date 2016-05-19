@@ -1,11 +1,37 @@
 #!/usr/bin/env python3
+
 from tkinter import *
 import tkinter.filedialog as fdialog
 from functools import partial
-from RunMeParserGUI import RunMeParserFunc
-from RunMeGenGUI import RunMeGenFunc
 from libGrammarReader import parseGrammarFile
 from libTextParser import parseText
+from libTextGen import genText
+
+
+# main function created from RunMeParser
+# uses as parameter:
+#   text -> aux string
+#   filePatch -> {}
+def RunMeParserFunc(text, filePath):
+    # if len(sys.argv) != 3:
+    #     print("Usage: %s gramatica.txt \"text to parse\" " % os.path.basename(sys.argv[0]))
+    #     exit(1)
+
+    g = parseGrammarFile(filePath)
+    acc, trees = parseText(g, text)
+
+    if acc:
+        return 'Text accepted!' + trees
+    else:
+        return 'Text rejected!'
+
+
+# func to send the text to the GUI
+def RunMeGenFunc(filePath):
+    g = parseGrammarFile(filePath)
+    text = genText(g)
+    return text
+
 
 #main function
 # window -> Tk
@@ -15,10 +41,10 @@ def mainFunc(window):
     introFrame.pack()
     
     #create the main logo
-    img = PhotoImage(file="images\\earley.gif")   # convert the Image object into a TkPhoto object
-    imgsmaller=img.subsample(2, 2)
-    earleyImage = Label(introFrame, image=imgsmaller)    # put it in the display window
-    earleyImage.pack()
+#    img = PhotoImage(file="images\\earley.gif")   # convert the Image object into a TkPhoto object
+#    imgsmaller=img.subsample(2, 2)
+#    earleyImage = Label(introFrame, image=imgsmaller)    # put it in the display window
+#    earleyImage.pack()
     
     # print the first dialog at the window
     # introLabel =
@@ -41,6 +67,7 @@ def mainFunc(window):
     
     return
 
+
 # Function to return to the main screen
 # Frame1 -> Frame
 # window -> Tk()
@@ -48,6 +75,7 @@ def returnMainScreen(Frame1, window):
     Frame1.destroy()
     mainFunc(window)
     return
+
 
 # Function to reconize the button click from the Reconize Language screen and generate the tree
 def btAccRecLanClick(text, filePath, enTex, recFrame, window, showTreeArea):
@@ -66,7 +94,8 @@ def btAccRecLanClick(text, filePath, enTex, recFrame, window, showTreeArea):
         showTreeArea["state"] = DISABLED
         
     return
-    
+
+
 # command for the bt1 button
 # Reconize Language
 # Frame1 -> Frame
@@ -113,6 +142,7 @@ def RecLangFunc(Frame1, Frame2, window):
 
     return
 
+
 def createaboutWindow():
     aboutWindow = Toplevel()
     aboutWindow.geometry("450x250+200+200")
@@ -132,7 +162,8 @@ def createaboutWindow():
     ufrgsImage.grid(row=1,column=1)   
     
     aboutWindow.mainloop()
-    
+
+
 # Function to get the file
 # fileText -> Text()
 # filePath -> {}
@@ -147,6 +178,7 @@ def getFilename(fileText, filePath):
         fileText.insert('end', "File not found!")
     fileText["state"] = DISABLED
     return
+
 
 # Function to generate the random infomercial
 # Frame1 -> Frame
@@ -187,6 +219,7 @@ def genInfomercial(Frame1, Frame2, window):
     btReturn.grid(row=0, column=0, sticky=W)
 
     return
+
 
 # Function to show the text generator on the box Text
 # genFrame -> Frame
