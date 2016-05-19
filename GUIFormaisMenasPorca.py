@@ -54,14 +54,15 @@ def btAccRecLanClick(text, filePath, enTex, recFrame, window):
 
         scr = Scrollbar(recFrame, orient=VERTICAL)
         scr.grid(row=2, column=3, sticky=NS)
-        texty = Text(recFrame, wrap=WORD, yscrollcommand=scr.set)
+        texty = Text(recFrame, wrap=WORD, yscrollcommand=scr.set, height="23")
         texty.grid(row=2, sticky = W)
         scr.config(command = texty.yview)
         texty.insert(INSERT, RETORNO)
         texty["state"] = DISABLED
         
     return
-    
+
+
 # command for the bt1 button
 # Reconize Language
 # Frame1 -> Frame
@@ -173,7 +174,7 @@ w.title("Infomercial Generator")
 w["bg"] = "ghost white"
 
 # size of the window: Pt_Br (Largura x Altura + DistEsquerda + DistTopo) -> pixels
-w.geometry("660x410+200+200")
+w.geometry("660x422+200+200")
 
 mainFunc(w)
 
