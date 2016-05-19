@@ -126,7 +126,7 @@ def RecLangFunc(Frame1, Frame2, window):
     fileText = Text(recFrame, borderwidth="2",height=1, width=27)
     fileText.place(x=390,y=3)
     
-    btFileOpen = Button(recFrame, text="Search", command= partial(getFilename, fileText, filePath))
+    btFileOpen = Button(recFrame, text="Search", command= partial(getFilenameRec, fileText, filePath))
     btFileOpen.place(x=615,y=0,height=25)
     
     scr = Scrollbar(recFrame, orient=VERTICAL)
@@ -171,12 +171,12 @@ def createaboutWindow():
 # Function to get the file
 # fileText -> Text()
 # filePath -> {}
-def getFilename(fileText, filePath):
+def getFilenameRec(fileText, filePath):
     global g
     filePath['file'] = fdialog.askopenfile(mode='r',defaultextension='txt', title="Find the grammar to be parsed...")
     fileText["state"] = NORMAL
+    fileText.delete('1.0',END)
     if filePath['file']:
-        fileText.delete('1.0',END)
         try:
             g = libGrammarReader.parseGrammarFile(filePath['file'].name)
             fileText.insert('end', filePath['file'].name)
@@ -184,7 +184,30 @@ def getFilename(fileText, filePath):
             g = {}
             messagebox.showerror("Error!", error.args[0])
     else:
-        fileText.delete('1.0',END)
+        fileText.insert('end', "File not found!")
+    fileText["state"] = DISABLED
+    return
+
+
+# Function to get the file
+# fileText -> Text()
+# genFrame -> Frame
+# filePath -> {}
+# infoText -> Text()
+def getFilenameGen(fileText, genFrame, filePath, infoText):
+    global g
+    filePath['file'] = fdialog.askopenfile(mode='r',defaultextension='txt', title="Find the grammar to be parsed...")
+    fileText["state"] = NORMAL
+    fileText.delete('1.0',END)
+    if filePath['file']:
+        try:
+            g = libGrammarReader.parseGrammarFile(filePath['file'].name)
+            fileText.insert('end', filePath['file'].name)
+            btInfoFunc(genFrame, filePath, infoText)
+        except ParseError as error:
+            g = {}
+            messagebox.showerror("Error!", error.args[0])
+    else:
         fileText.insert('end', "File not found!")
     fileText["state"] = DISABLED
     return
@@ -214,13 +237,11 @@ def genInfomercial(Frame1, Frame2, window):
     infomercialText.grid(row=1, column=0)
     infomercialText.insert(INSERT, "PICK UP YOUR PHONE NOW AND CALL 1-800-EARLEY!!\n(choose a file so we can begin!)")
     
-    btFileOpen = Button(genFrame, text="Search", command=partial(getFilename, fileText, filePath))
+    btFileOpen = Button(genFrame, text="Search", command=partial(getFilenameGen, fileText, genFrame, filePath, infomercialText))
     btFileOpen.place(x=260, y=0)
 
-    # btInfoFunc(genFrame)
-
     butThereIsMore = PhotoImage(file = "img\\More.gif")
-    btInfo = Button(genFrame, comman = partial(btInfoFunc, genFrame, filePath, infomercialText))
+    btInfo = Button(genFrame, command=partial(btInfoFunc, genFrame, filePath, infomercialText))
     btInfo.image = butThereIsMore
     btInfo.configure(image = butThereIsMore)
     btInfo.place(x=182, y=215)
