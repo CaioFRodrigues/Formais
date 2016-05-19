@@ -2,6 +2,7 @@
 
 from tkinter import *
 import tkinter.filedialog as fdialog
+import tkinter.messagebox as messagebox
 from functools import partial
 import libGrammarReader
 import libTextParser
@@ -21,7 +22,7 @@ def RunMeParserFunc(text, g):
         else:
             return 'Text rejected!'
     except:
-        # TODO: open a dialog saying the grammar is invalid
+        messagebox.showerror("Error!", "Invalid grammar!")
         return 'Invalid grammar!'
 
 
@@ -32,7 +33,7 @@ def RunMeGenFunc(g):
         text = libTextGen.genText(g)
         return text
     except:
-        # TODO: open a dialog saying the grammar is invalid
+        messagebox.showerror("Error!", "Invalid grammar!")
         return 'Invalid grammar!'
 
 
@@ -44,10 +45,10 @@ def mainFunc(window):
     introFrame.pack()
     
     # create the main logo
-#    img = PhotoImage(file="img\\earley.gif")   # convert the Image object into a TkPhoto object
-#    imgsmaller=img.subsample(2, 2)
-#    earleyImage = Label(introFrame, image=imgsmaller)    # put it in the display window
-#    earleyImage.pack()
+    img = PhotoImage(file="img\\earley.gif")   # convert the Image object into a TkPhoto object
+    imgsmaller=img.subsample(2, 2)
+    earleyImage = Label(introFrame, image=imgsmaller)    # put it in the display window
+    earleyImage.pack()
     
     # print the first dialog at the window
     # introLabel =
@@ -117,16 +118,16 @@ def RecLangFunc(Frame1, Frame2, window):
     labelFile = Label(recFrame, text="Current file:")
     labelFile.place(x=320,y=3)
 
-    enText = Entry(recFrame, borderwidth="2")
-    enText.place(x=140,y=3)
+    qtText = Entry(recFrame, borderwidth="2")
+    qtText.place(x=140,y=3)
     
     filePath ={}
     
-    fileText = Text(recFrame, borderwidth="2",height=1, width=20)
+    fileText = Text(recFrame, borderwidth="2",height=1, width=27)
     fileText.place(x=390,y=3)
     
     btFileOpen = Button(recFrame, text="Search", command= partial(getFilename, fileText, filePath))
-    btFileOpen.place(x=560,y=0,height=25)
+    btFileOpen.place(x=615,y=0,height=25)
     
     scr = Scrollbar(recFrame, orient=VERTICAL)
     scr.grid(row=2, column=3, sticky=NS)
@@ -137,7 +138,7 @@ def RecLangFunc(Frame1, Frame2, window):
     showTreeArea.insert(INSERT, "Enter a phrase and choose a file to parse it with the Earley Parsing Algorithm!")
     
     text = ""
-    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, text, filePath, enText, recFrame, window, showTreeArea))
+    btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, text, filePath, qtText, recFrame, window, showTreeArea))
     btAccRecLan.place(x=270,y=0,height=25)
     
     btReturn = Button(recFrame, text="<", command=partial(returnMainScreen, recFrame, window))
@@ -172,7 +173,7 @@ def createaboutWindow():
 # filePath -> {}
 def getFilename(fileText, filePath):
     global g
-    filePath['file'] = fdialog.askopenfile(mode='r',defaultextension='txt', title="Find the gramatic to be parsed...")
+    filePath['file'] = fdialog.askopenfile(mode='r',defaultextension='txt', title="Find the grammar to be parsed...")
     fileText["state"] = NORMAL
     if filePath['file']:
         fileText.delete('1.0',END)
@@ -181,7 +182,7 @@ def getFilename(fileText, filePath):
             fileText.insert('end', filePath['file'].name)
         except ParseError as error:
             g = {}
-            fileText.insert('end', error.args[0])
+            messagebox.showerror("Error!", error.args[0])
     else:
         fileText.delete('1.0',END)
         fileText.insert('end', "File not found!")
@@ -211,7 +212,7 @@ def genInfomercial(Frame1, Frame2, window):
     
     infomercialText = Text(genFrame,  wrap=WORD, height = "11", width = "81")
     infomercialText.grid(row=1, column=0)
-    infomercialText.insert(INSERT, "PICK UP YOUR PHONE NOW AND CALL 1-800-EARLEY!!\n (choose a file so we can begin!)")
+    infomercialText.insert(INSERT, "PICK UP YOUR PHONE NOW AND CALL 1-800-EARLEY!!\n(choose a file so we can begin!)")
     
     btFileOpen = Button(genFrame, text="Search", command=partial(getFilename, fileText, filePath))
     btFileOpen.place(x=260, y=0)
@@ -222,7 +223,7 @@ def genInfomercial(Frame1, Frame2, window):
     btInfo = Button(genFrame, comman = partial(btInfoFunc, genFrame, filePath, infomercialText))
     btInfo.image = butThereIsMore
     btInfo.configure(image = butThereIsMore)
-    btInfo.place(x=150, y=215)
+    btInfo.place(x=182, y=215)
 
     btReturn = Button(genFrame, text="<", command=partial(returnMainScreen, genFrame, window))
     btReturn.grid(row=0, column=0, sticky=W)
