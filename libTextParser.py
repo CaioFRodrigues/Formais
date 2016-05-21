@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from libExcept import *
+import copy
 
 
 """
@@ -53,9 +54,8 @@ def parseText(g, text):
             dot = drule['dot']
             if dot == drule['nsymbols']:        # this drule is already finished, skip it
                 continue
-            if drule['prod'][dot] == rsymbol:       # if this drule has the current word after the dot
-                d[n] = advanceDot(g, drule, d, n)   # advance the dot and propagate this all around dn
-                drule['hist'].append(rsymbol)       # add the terminal to the history
+            if drule['prod'][dot] == rsymbol:               # if this drule has the current word after the dot
+                d[n] = advanceDot(g, drule, d, n, rsymbol)  # advance the dot and propagate this all around dn
 
     # to accept the text, we must have a drule in the last dset with:
     accepts = []
@@ -111,7 +111,7 @@ def expandFromGrammar(g, dset, slash, s):
     return dset
 
 
-def advanceDot(g, drule, d, n):
+def advanceDot(g, drule, d, n, hist):
     """
     Copy a drule to the current dset advancing the dot and propagating to other drules
 
@@ -120,13 +120,16 @@ def advanceDot(g, drule, d, n):
         drule = dictionary describing a rule in a dset
         d = list of dsets
         n = integer describing a dset index
+        hist = drule or string that caused the dot to advance
 
     Return value:
         d[n] = new dset after advancing the dot and propagating to the other rules
     """
 
-    newdrule = drule.copy()     # do it this way, otherwise you're copying a "pointer"
-    newdrule['dot'] += 1        # advance the dot
+    newdrule = copy.deepcopy(drule)     # do it this way, otherwise you're making a shallow copy
+    newdrule['dot'] += 1                # advance the dot
+    newdrule['hist'].append(hist)       # add the generating rule to the history
+
     if not newdrule in d[n]:
         d[n].append(newdrule)   # copy to the current dset
 
@@ -156,13 +159,12 @@ def expandFromSlash(g, d, n, newdrule):
 
     newslash = newdrule['slash']
     newrname = newdrule['rname']
-    for drule in d[newslash]:               # look in the slash dset
+    for drule in d[newslash]:                           # look in the slash dset
         dot = drule['dot']
-        if dot == drule['nsymbols']:        # this drule is already finished, skip it
+        if dot == drule['nsymbols']:                    # this drule is already finished, skip it
             continue
-        if drule['prod'][dot] == newrname:  # if this drule has the finished var after the dot
-            advanceDot(g, drule, d, n)      # advance the dot and propagate this all around dn
-            drule['hist'].append(newdrule)  # add the generating rule to the history
+        if drule['prod'][dot] == newrname:              # if this drule has the finished var after the dot
+            d[n] = advanceDot(g, drule, d, n, newdrule) # advance the dot and propagate this all around dn
 
     return d[n]
 

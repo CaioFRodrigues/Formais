@@ -21,7 +21,7 @@ def RunMeParserFunc(text, g):
             return 'Text accepted!' + trees
         else:
             return 'Text rejected!'
-    except:
+    except GrammarError:
         messagebox.showerror("Error!", "Invalid grammar!")
         return 'Invalid grammar!'
 
@@ -32,7 +32,7 @@ def RunMeGenFunc(g):
     try:
         text = libTextGen.genText(g)
         return text
-    except:
+    except GrammarError:
         messagebox.showerror("Error!", "Invalid grammar!")
         return 'Invalid grammar!'
 
