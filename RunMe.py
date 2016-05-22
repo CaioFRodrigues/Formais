@@ -28,9 +28,9 @@ def WindowMain(window):
     earleyImage.pack()
 
     # creating the buttons objects
-    bt1 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Recognize Language", fg="black", command=partial(WindowParse, introFrame, window))
-    bt2 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Generate Infomercial!", fg="red4", command=partial(WindowGen, introFrame, window))
-    bt3 = Button(window, relief = GROOVE, font = "Courier 12 bold", text="About", command=WindowAbout)
+    bt1 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Recognize Language", fg="black", command=partial(WindowParse, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
+    bt2 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Generate Infomercial!", fg="black", command=partial(WindowGen, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
+    bt3 = Button(window, relief = GROOVE, font = "Courier 12 bold", text="About", command=WindowAbout, background="LightBlue1", activebackground="LightBlue1")
 
     # put the buttons at their right positions
     bt1.place(x=390, y=560)
@@ -89,7 +89,7 @@ def WindowParse(frame, window):
     fileText["state"] = DISABLED
     
     #creates the search button
-    btFileOpen = Button(recFrame, text="Search",relief = GROOVE, command= partial(DialogGrammarParse, fileText), font = "Courier 10 bold")
+    btFileOpen = Button(recFrame, text="Search",relief = GROOVE, command= partial(DialogGrammarParse, fileText), font = "Courier 10 bold", background="coral1", activebackground="coral1")
     btFileOpen.place(x=668,y=112,height=25)
     
     #creates the text area frame that will be called by other functions to show the result
@@ -121,11 +121,11 @@ def WindowParse(frame, window):
     #creates a null string to be used as a pointer
     text = ""
     #creates the button that will handle getting the current file and parsing the user entered text
-    btAccRecLan = Button(recFrame, text="OK",relief = GROOVE, command=partial(ActionParse, qtText, showTreeArea), font = "Courier 13 bold")
+    btAccRecLan = Button(recFrame, text="OK",relief = GROOVE, command=partial(ActionParse, qtText, showTreeArea), font = "Courier 13 bold", background="coral1", activebackground="coral1")
     btAccRecLan.place(x=480,y=82,height=25)
     
     #the return button
-    btReturn = Button(recFrame, text="←",relief = GROOVE, command=partial(ActionGotoMain, recFrame, window),font = "Courier 15 bold")
+    btReturn = Button(recFrame, text="←",relief = GROOVE, command=partial(ActionGotoMain, recFrame, window),font = "Courier 15 bold", background="PaleTurquoise1", activebackground="PaleTurquoise1")
     btReturn.place(x=55, y=39)
 
     #this is only necessary in the Windows platform, and it makes images persistent
@@ -246,7 +246,7 @@ def WindowGen(frame, window):
     scr.config(command = infomercialText.yview)
     
     #creates the search button
-    btFileOpen = Button(genFrame, text="Search", command=partial(DialogGrammarGen, fileText, infomercialText))
+    btFileOpen = Button(genFrame, text="Search",relief = GROOVE, command=partial(DialogGrammarGen, fileText, infomercialText), background="coral1",activebackground="coral1", font = "Courier 10 bold")
     btFileOpen.place(x=668,y=82,height=25)
 
     #creates the butwait!! image and makes it a button
@@ -257,7 +257,7 @@ def WindowGen(frame, window):
     btInfo.place(x=260, y=380)
 
     #the return button
-    btReturn = Button(genFrame, text="←",relief = GROOVE, command=partial(ActionGotoMain, genFrame, window),font = "Courier 15 bold")
+    btReturn = Button(genFrame, text="←",relief = GROOVE, command=partial(ActionGotoMain, genFrame, window),font = "Courier 15 bold", background="PaleTurquoise1",activebackground="PaleTurquoise1")
     btReturn.place(x=55, y=39)
 
     #this is only necessary in the Windows platform, and it makes images persistent
