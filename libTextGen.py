@@ -16,7 +16,7 @@ def genText(g):
     """
 
     if not g:
-        raise GrammarError
+        raise GrammarError()
 
     text = [ g['start'] ]                       # start with the starting variable
     while set(text).intersection(g['rnames']):  # while there are vars in the text

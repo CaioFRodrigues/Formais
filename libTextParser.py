@@ -37,7 +37,7 @@ def parseText(g, text):
     """
 
     if not g:
-        raise GrammarError
+        raise GrammarError()
 
     t = text.split()
     t[:] = map(str.strip, t)    # strip spaces from each word in the text

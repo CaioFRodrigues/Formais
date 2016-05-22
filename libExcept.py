@@ -10,6 +10,6 @@ class ParseError(Exception):
     pass
 
 
-class GrammarError:
+class GrammarError(Exception):
     """GrammarError exception name declaration"""
     pass
