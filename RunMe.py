@@ -28,9 +28,9 @@ def WindowMain(window):
     earleyImage.pack()
 
     # creating the buttons objects
-    bt1 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Recognize Language", fg="black", command=partial(WindowParse, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
-    bt2 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Generate Infomercial!", fg="black", command=partial(WindowGen, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
-    bt3 = Button(window, relief = GROOVE, font = "Courier 12 bold", text="About", command=WindowAbout, background="LightBlue1", activebackground="LightBlue1")
+    bt1 = Button(introFrame, relief=GROOVE, font="Courier 13 bold", text="Recognize Language", fg="black", command=partial(WindowParse, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
+    bt2 = Button(introFrame, relief=GROOVE, font="Courier 13 bold", text="Generate Infomercial!", fg="black", command=partial(WindowGen, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
+    bt3 = Button(window, relief=GROOVE, font="Courier 12 bold", text="About", command=WindowAbout, background="LightBlue1", activebackground="LightBlue1")
 
     # put the buttons at their right positions
     bt1.place(x=390, y=560)
@@ -62,70 +62,68 @@ def WindowParse(frame, window):
         window = Tk
     """
 
-    #destroys previous window
+    # destroy previous window
     frame.destroy()
-    
-    #makes a new frame for the widgets
+
+    # make a new frame for the widgets
     recFrame = Frame(window)
     recFrame.pack(fill=BOTH)
-    
-    #makes a new frame for the image
+
+    # make a new frame for the image
     recImage = Frame(recFrame)
     recImage.pack(fill=BOTH)
-    
-    #creates widget and assign image to it
-    img = PhotoImage(file="img\\background.gif")   # convert the Image object into a TkPhoto object
+
+    # create widget and assign image to it
+    img = PhotoImage(file="img/background.gif")   # convert the Image object into a TkPhoto object
     backgroundImage = Label(recImage, image=img)    # put it in the display window
     backgroundImage.pack()
-   
-   #create label for the current file and selects the style options
-    labelFile = Label(recFrame, text="Current file:", background = "AntiqueWhite1", font = "Courier 13 bold underline")
-    labelFile.place(x=60,y=110)
-    
-    #create text box that will show the file path
-    fileText = Text(recFrame, borderwidth="2",height=1, width=46, font = "Courier 13 bold", selectbackground= "coral1")
-    fileText.place(x=200,y=112)
-    #disables it so the user can't write what they want, a search function will be provided
+
+    # create label for the current file and select the style options
+    labelFile = Label(recFrame, text="Current file:", background="AntiqueWhite1", font="Courier 13 bold underline")
+    labelFile.place(x=60, y=110)
+
+    # create text box that will show the file path
+    fileText = Text(recFrame, borderwidth="2", height=1, width=46, font="Courier 13 bold", selectbackground= "coral1")
+    fileText.place(x=200, y=112)
+    # disable it so the user can't edit, a search function will be provided
     fileText["state"] = DISABLED
-    
-    #creates the search button
-    btFileOpen = Button(recFrame, text="Search",relief = GROOVE, command= partial(DialogGrammarParse, fileText), font = "Courier 10 bold", background="coral1", activebackground="coral1")
-    btFileOpen.place(x=668,y=112,height=25)
-    
-    #creates the text area frame that will be called by other functions to show the result
+
+    # create the search button
+    btFileOpen = Button(recFrame, text="Search", relief=GROOVE, command=partial(DialogGrammarParse, fileText), font="Courier 10 bold", background="coral1", activebackground="coral1")
+    btFileOpen.place(x=668, y=112, height=25)
+
+    # create the text area frame that will be called by other functions to show the result
     recTextArea = Frame(recFrame)
     recTextArea.place(x=70, y=145, height=410, width=824)
-    
-    #put the scroll bar filling the right side of the frame
+
+    # put the scroll bar filling the right side of the frame
     scr = Scrollbar(recTextArea, orient=VERTICAL)
     scr.pack(side=RIGHT, fill=Y)
-    
-    #creates the actual text area
-    showTreeArea = Text(recTextArea, wrap=WORD, yscrollcommand=scr.set, relief=FLAT, background = "AntiqueWhite1", font = "Courier 15 bold", selectbackground= "coral1")
+
+    # create the actual text area
+    showTreeArea = Text(recTextArea, wrap=WORD, yscrollcommand=scr.set, relief=FLAT, background="AntiqueWhite1", font="Courier 15 bold", selectbackground="coral1")
     showTreeArea.pack(fill=BOTH)
     showTreeArea.insert(INSERT, "Enter a phrase up here ↑ \n and then choose a file to parse it\n  with the Earley Parsing Algorithm!!")
-    #disables it so the user don't write what they want, only the program will
+    # disable it so the user can't edit, only the program will
     showTreeArea["state"] = DISABLED
 
-    #configures the scroll to work in the text area frame
+    # configure the scroll to work in the text area frame
     scr.config(command = showTreeArea.yview)
-    
-    #the same that was done with the current file label
-    labelQuestion = Label(recFrame, text="Enter your Language:",background = "AntiqueWhite1",font = "Courier 13 bold underline")
-    labelQuestion.place(x=60,y=80)
-    
-    #creates a new entry for the end user to enter with a valid or invalid text
-    qtText = Entry(recFrame,width=20, borderwidth="2",font = "Courier 13 bold", selectbackground= "coral1")
-    qtText.place(x=272,y=82)  
-    
-    #creates a null string to be used as a pointer
-    text = ""
+
+    # the same that was done with the current file label
+    labelQuestion = Label(recFrame, text="Enter your Language:", background="AntiqueWhite1", font="Courier 13 bold underline")
+    labelQuestion.place(x=60, y=80)
+
+    # create a new entry for the user to enter a valid or invalid text
+    qtText = Entry(recFrame, width=20, borderwidth="2", font="Courier 13 bold", selectbackground="coral1")
+    qtText.place(x=272, y=82)  
+
     #creates the button that will handle getting the current file and parsing the user entered text
-    btAccRecLan = Button(recFrame, text="OK",relief = GROOVE, command=partial(ActionParse, qtText, showTreeArea), font = "Courier 13 bold", background="coral1", activebackground="coral1")
-    btAccRecLan.place(x=480,y=82,height=25)
+    btAccRecLan = Button(recFrame, text="OK", relief=GROOVE, command=partial(ActionParse, qtText, showTreeArea), font="Courier 13 bold", background="coral1", activebackground="coral1")
+    btAccRecLan.place(x=480, y=82, height=25)
     
     #the return button
-    btReturn = Button(recFrame, text="←",relief = GROOVE, command=partial(ActionGotoMain, recFrame, window),font = "Courier 15 bold", background="PaleTurquoise1", activebackground="PaleTurquoise1")
+    btReturn = Button(recFrame, text="←", relief=GROOVE, command=partial(ActionGotoMain, recFrame, window), font="Courier 15 bold", background="PaleTurquoise1", activebackground="PaleTurquoise1")
     btReturn.place(x=55, y=39)
 
     #this is only necessary in the Windows platform, and it makes images persistent
@@ -142,11 +140,11 @@ def DialogGrammarParse(fileText):
 
     global g
 
-    #calls tkinters filedialog that will handle the search for a new file
+    # call tkinter's filedialog that will handle the search for a new file
     filePath = fdialog.askopenfile(mode='r', defaultextension='txt', title="Find the grammar to be parsed...")
     filename = filePath.name
     
-    #try parsing the file
+    # try parsing the file
     try:
         g = libGrammarReader.parseGrammarFile(filename)
         fileText["state"] = NORMAL
@@ -154,7 +152,7 @@ def DialogGrammarParse(fileText):
         fileText.insert('end', filename)
         fileText["state"] = DISABLED
 
-    #returns the right error from the exception class if something goes wrong  
+    # return the right error from the exception class if something goes wrong  
     except ParseError as error:
         g = {}
         messagebox.showerror("Error!", error.args[0])
@@ -171,7 +169,7 @@ def ActionParse(inputArea, outputArea):
 
     global g
 
-    #try parsing the text
+    # try parsing the text
     try:
         inText = inputArea.get()
         acc, trees = libTextParser.parseText(g, inText)
@@ -181,13 +179,13 @@ def ActionParse(inputArea, outputArea):
         else:
             outText = 'Text rejected!'
 
-        #puts the resulting tree in the text area
+        # put the results in the text area
         outputArea["state"] = NORMAL
         outputArea.delete('1.0', END)
         outputArea.insert(INSERT, outText)
         outputArea["state"] = DISABLED
 
-    #returns the right error from the exception class if something goes wrong  
+    # return the right error from the exception class if something goes wrong  
     except GrammarError:
         messagebox.showerror("Error!", "Invalid grammar!")
 
@@ -201,66 +199,66 @@ def WindowGen(frame, window):
         window = Tk
     """
 
-    #destroys previous window
+    # destroy previous window
     frame.destroy()
 
-    #makes a new frame for the widgets
+    # make a new frame for the widgets
     genFrame = Frame(window)
     genFrame.pack(fill=BOTH)
-    
-    #makes a new frame for the image
+
+    # make a new frame for the image
     recImage = Frame(genFrame)
     recImage.pack(fill=BOTH)
-    
-    #creates widget and assign image to it
-    img = PhotoImage(file="img\\background.gif")   # convert the Image object into a TkPhoto object
+
+    # create widget and assign image to it
+    img = PhotoImage(file="img/background.gif")   # convert the Image object into a TkPhoto object
     backgroundImage = Label(recImage, image=img)    # put it in the display window
     backgroundImage.pack()
-    
-   #create label for the current file and selects the style options
-    labelFile = Label(genFrame, text="Current file:", background = "AntiqueWhite1",font = "Courier 13 bold underline")
-    labelFile.place(x=60,y=80)
 
-    #create text box that will show the file path
-    fileText = Text(genFrame, borderwidth="2",height=1, width=46, font = "Courier 13 bold", selectbackground= "coral1")
-    fileText.place(x=200,y=82)
-    #disables it so the user can't write what they want, a search function will be provided
+    # create label for the current file and select the style options
+    labelFile = Label(genFrame, text="Current file:", background="AntiqueWhite1", font="Courier 13 bold underline")
+    labelFile.place(x=60, y=80)
+
+    # create text box that will show the file path
+    fileText = Text(genFrame, borderwidth="2", height=1, width=46, font="Courier 13 bold", selectbackground="coral1")
+    fileText.place(x=200, y=82)
+    # disable it so the user can't edit, a search function will be provided
     fileText["state"] = DISABLED
-    
-    #creates the text area frame that will be called by other functions to show the result
+
+    # create the text area frame that will be called by other functions to show the result
     recTextArea = Frame(genFrame)
     recTextArea.place(x=70, y=140, height=230, width=820)
-    
-    #put the scroll bar filling the right side of the frame
+
+    # put the scroll bar filling the right side of the frame
     scr = Scrollbar(recTextArea, orient=VERTICAL)
     scr.pack(side=RIGHT, fill=Y)
-    
-    #creates the actual text area
-    infomercialText = Text(recTextArea, wrap=WORD, yscrollcommand=scr.set, relief=FLAT, background = "AntiqueWhite1", font = "Courier 17 bold", selectbackground= "coral1")
+
+    # create the actual text area
+    infomercialText = Text(recTextArea, wrap=WORD, yscrollcommand=scr.set, relief=FLAT, background="AntiqueWhite1", font="Courier 17 bold", selectbackground="coral1")
     infomercialText.pack(fill=BOTH)
     infomercialText.insert(INSERT, "PICK UP YOUR PHONE NOW AND CALL 1-800-EARLEY!!\n(choose a file so we can begin!)")
-    #disables it so the user don't write what they want, only the program will
+    # disable it so the user can't edit, only the program will
     infomercialText["state"] = DISABLED
-    
-    #configures the scroll to work in the text area frame
-    scr.config(command = infomercialText.yview)
-    
-    #creates the search button
-    btFileOpen = Button(genFrame, text="Search",relief = GROOVE, command=partial(DialogGrammarGen, fileText, infomercialText), background="coral1",activebackground="coral1", font = "Courier 10 bold")
-    btFileOpen.place(x=668,y=82,height=25)
 
-    #creates the butwait!! image and makes it a button
-    butThereIsMore = PhotoImage(file = "img\\butwait.gif")
+    # configure the scroll to work in the text area frame
+    scr.config(command=infomercialText.yview)
+
+    # create the search button
+    btFileOpen = Button(genFrame, text="Search", relief=GROOVE, command=partial(DialogGrammarGen, fileText, infomercialText), background="coral1", activebackground="coral1", font="Courier 10 bold")
+    btFileOpen.place(x=668, y=82, height=25)
+
+    # create the butwait!! image and make it a button
+    img = PhotoImage(file="img/butwait.gif")
     btInfo = Button(genFrame, relief=GROOVE, command=partial(ActionGen, infomercialText))
-    btInfo.image = butThereIsMore
-    btInfo.configure(image = butThereIsMore)
+    btInfo.image = img
+    btInfo.configure(image=img)
     btInfo.place(x=260, y=380)
 
-    #the return button
-    btReturn = Button(genFrame, text="←",relief = GROOVE, command=partial(ActionGotoMain, genFrame, window),font = "Courier 15 bold", background="PaleTurquoise1",activebackground="PaleTurquoise1")
+    # the return button
+    btReturn = Button(genFrame, text="←", relief=GROOVE, command=partial(ActionGotoMain, genFrame, window), font="Courier 15 bold", background="PaleTurquoise1", activebackground="PaleTurquoise1")
     btReturn.place(x=55, y=39)
 
-    #this is only necessary in the Windows platform, and it makes images persistent
+    # this is only necessary in the Windows platform, and it makes images persistent
     genFrame.mainloop()
 
 
@@ -321,20 +319,20 @@ def WindowAbout():
         window = Tk
     """
     
-    #creates the about window as a top level widget
+    # create the about window as a top level widget
     aboutWindow = Toplevel()
     aboutWindow.geometry("440x280+600+150")
     aboutWindow.title("About")
     aboutWindow.resizable(0, 0)
-    msg= Label(aboutWindow,font = "Courier 13 bold", text="Earley Parser v0.8\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
-    msg.grid(row=0,column=0, columnspan=3)
+    msg= Label(aboutWindow, font="Courier 13 bold", text="Earley Parser v0.8\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
+    msg.grid(row=0, column=0, columnspan=3)
 
-    #INF image
+    # INF image
     img = PhotoImage(file="img/inf.gif")
     infImage = Label(aboutWindow, image=img)
     infImage.grid(row=1, column=0)
 
-    #UFRGS image
+    # UFRGS image
     img2 = PhotoImage(file="img/ufrgs.gif")
     ufrgsImage = Label(aboutWindow, image=img2)
     ufrgsImage.grid(row=1, column=1)   
