@@ -120,7 +120,7 @@ def DialogGrammarParse(fileText):
     global g
 
     filePath = fdialog.askopenfile(mode='r', defaultextension='txt', title="Find the grammar to be parsed...")
-    filename = filePath['file'].name
+    filename = filePath.name
 
     try:
         g = libGrammarReader.parseGrammarFile(filename)
@@ -187,11 +187,11 @@ def WindowGen(frame, window):
     infomercialText.grid(row=1, column=0)
     infomercialText.insert(INSERT, "PICK UP YOUR PHONE NOW AND CALL 1-800-EARLEY!!\n(choose a file so we can begin!)")
 
-    btFileOpen = Button(genFrame, text="Search", command=partial(DialogGrammarGen, fileText, genFrame, infomercialText))
+    btFileOpen = Button(genFrame, text="Search", command=partial(DialogGrammarGen, fileText, infomercialText))
     btFileOpen.place(x=260, y=0)
 
     img = PhotoImage(file = "img/more.gif")
-    btInfo = Button(genFrame, command=partial(ActionGen, genFrame, infomercialText))
+    btInfo = Button(genFrame, command=partial(ActionGen, infomercialText))
     btInfo.image = img
     btInfo.configure(image=img)
     btInfo.place(x=182, y=215)
@@ -200,27 +200,26 @@ def WindowGen(frame, window):
     btReturn.grid(row=0, column=0, sticky=W)
 
 
-def DialogGrammarGen(fileText, genFrame, infoText):
+def DialogGrammarGen(fileText, infoText):
     """
     File open dialog for the text generation window
 
     Keyword arguments:
         fileText = Text
-        genFrame = Frame
         infoText = Text
     """
 
     global g
 
     filePath = fdialog.askopenfile(mode='r', defaultextension='txt', title="Find the grammar to be parsed...")
-    filename = filePath['file'].name
+    filename = filePath.name
 
     try:
-        g = libGrammarReader.parseGrammarFile(filePath['file'].name)
+        g = libGrammarReader.parseGrammarFile(filename)
         fileText["state"] = NORMAL
         fileText.delete('1.0', END)
-        fileText.insert('end', filePath['file'].name)
-        ActionGen(genFrame, infoText)
+        fileText.insert('end', filename)
+        ActionGen(infoText)
         fileText["state"] = DISABLED
 
     except ParseError as error:
