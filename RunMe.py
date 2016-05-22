@@ -46,26 +46,18 @@ def mainFunc(window):
     
     # create the main logo
     img = PhotoImage(file="img\\earley.gif")   # convert the Image object into a TkPhoto object
-    imgsmaller=img.subsample(2, 2)
-    earleyImage = Label(introFrame, image=imgsmaller)    # put it in the display window
+    earleyImage = Label(introFrame, image=img)    # put it in the display window
     earleyImage.pack()
-    
-    # print the first dialog at the window
-    # introLabel =
-    Label(introFrame, text="Welcome to the Infomercial Generator!\nWhat would you like to do?").pack()
-
-    # creating the bottom frame block o add the buttons
-    bottomFrame = Frame(window)
-    bottomFrame.pack(side=BOTTOM)
 
     # creating the buttons objects
-    bt1 = Button(bottomFrame, text="Recognize Language", fg="black", command=partial(RecLangFunc, bottomFrame, introFrame, window))
-    bt2 = Button(bottomFrame, text="Generate Infomercial!", fg="red4", command=partial(genInfomercial, bottomFrame, introFrame, window))
-    bt3 = Button(window, text = "About", command=createaboutWindow).place(x=20, y=10) #about button
+    bt1 = Button(introFrame, text="Recognize Language", fg="black", command=partial(RecLangFunc, introFrame, window))
+    bt2 = Button(introFrame, text="Generate Infomercial!", fg="red4", command=partial(genInfomercial, introFrame, window))
+    bt3 = Button(window, text = "About", command=createaboutWindow)#about button
     
     # put the buttons at their right positions
-    bt1.pack(side=LEFT)
-    bt2.pack(side=RIGHT)
+    bt1.place(x=400, y=580)
+    bt2.place(x=550, y=580)
+    bt3.place(x=850, y=20)
     
     introFrame.mainloop()
     
@@ -84,14 +76,9 @@ def returnMainScreen(Frame1, window):
 # Function to reconize the button click from the Reconize Language screen and generate the tree
 def btAccRecLanClick(text, filePath, enTex, recFrame, window, showTreeArea):
     text = enTex.get()
-    # print(enTex.get())
-    # print(texto)
+    
     if filePath:
         tree = RunMeParserFunc(text, g)
-        # lbTextinho = Label(recFrame, text=RETORNO).grid(row=3, column=0, columnspan=5)
-        # print(RETORNO)
-        # textFrame = Frame(recFrame)
-        # textFrame.grid(row = 3)
         showTreeArea["state"] = NORMAL
         showTreeArea.delete('1.0',END)
         showTreeArea.insert(INSERT, tree)
@@ -105,45 +92,59 @@ def btAccRecLanClick(text, filePath, enTex, recFrame, window, showTreeArea):
 # Frame1 -> Frame
 # Frame2 -> Frame
 # window -> Tk()
-def RecLangFunc(Frame1, Frame2, window):
+def RecLangFunc(Frame1, window):
     Frame1.destroy()
-    Frame2.destroy()
-
-    recFrame = Frame(window)
-    recFrame.grid(row=0, column=0, ipadx=600, ipady=400)
-
-    labelQuestion = Label(recFrame, text="Enter your Language:")
-    labelQuestion.place(x=20,y=3)
     
-    labelFile = Label(recFrame, text="Current file:")
-    labelFile.place(x=320,y=3)
+    recFrame = Frame(window)
+    recFrame.pack(fill=BOTH)
+    #recFrame.grid(row=0, column=0, ipadx=600, ipady=400)
+    
+    recImage = Frame(recFrame)
+    recImage.pack(fill=BOTH)
+    
+    img = PhotoImage(file="img\\background.gif")   # convert the Image object into a TkPhoto object
+    backgroundImage = Label(recImage, image=img)    # put it in the display window
+    backgroundImage.pack()
+   
+    
+    labelQuestion = Label(recFrame, text="Enter your Language:",background = "AntiqueWhite1",font = "Courier 13 bold underline")
+    labelQuestion.place(x=60,y=80)
+    
+    labelFile = Label(recFrame, text="Current file:", background = "AntiqueWhite1",font = "Courier 13 bold underline")
+    labelFile.place(x=60,y=110)
 
-    qtText = Entry(recFrame, borderwidth="2")
-    qtText.place(x=140,y=3)
+    qtText = Entry(recFrame, borderwidth="2",font = "Courier 13 bold underline")
+    qtText.place(x=280,y=82)
     
     filePath ={}
+    fileText = Text(recFrame, borderwidth="2",height=1, width=50, font = "Courier 13 bold underline")
+    fileText.place(x=200,y=112)
+    fileText["state"] = DISABLED
     
-    fileText = Text(recFrame, borderwidth="2",height=1, width=27)
-    fileText.place(x=390,y=3)
+    btFileOpen = Button(recFrame, text="Search", command= partial(getFilenameRec, fileText, filePath), font = "Courier 10 bold")
+    btFileOpen.place(x=670,y=112,height=25)
     
-    btFileOpen = Button(recFrame, text="Search", command= partial(getFilenameRec, fileText, filePath))
-    btFileOpen.place(x=615,y=0,height=25)
-    
-    scr = Scrollbar(recFrame, orient=VERTICAL)
-    scr.grid(row=2, column=3, sticky=NS)
-    showTreeArea = Text(recFrame, wrap=WORD, yscrollcommand=scr.set)
-    showTreeArea.grid(row=2, sticky = W)
+    recTextArea = Frame(recFrame)
+    recTextArea.place(x=70, y=140, height=410, width=820)
+    scr = Scrollbar(recTextArea, orient=VERTICAL)
+    #scr.grid(row=2, column=3, sticky=NS)
+    scr.pack(side=RIGHT, fill=Y)
+    showTreeArea = Text(recTextArea, wrap=WORD, yscrollcommand=scr.set, relief=FLAT, background = "AntiqueWhite1", font = "Courier 15 bold")
+    #showTreeArea.grid(row=2, sticky = W)
+    #showTreeArea.place(x=10, y=20, height=300, width=200)
+    showTreeArea.pack(fill=BOTH)
     scr.config(command = showTreeArea.yview)
     
-    showTreeArea.insert(INSERT, "Enter a phrase and choose a file to parse it with the Earley Parsing Algorithm!")
+    showTreeArea.insert(INSERT, "Enter a phrase up here ↑ \n and then choose a file to parse it\n  with the Earley Parsing Algorithm!")
     
     text = ""
     btAccRecLan = Button(recFrame, text="OK", command=partial(btAccRecLanClick, text, filePath, qtText, recFrame, window, showTreeArea))
     btAccRecLan.place(x=270,y=0,height=25)
     
     btReturn = Button(recFrame, text="<", command=partial(returnMainScreen, recFrame, window))
-    btReturn.grid(row=0, column=0, sticky=W)
+    btReturn.place(x=1, y=1)
 
+    recFrame.mainloop()
     return
 
 
@@ -152,7 +153,7 @@ def createaboutWindow():
     aboutWindow.geometry("450x250+200+200")
     aboutWindow.title("About")
     aboutWindow.resizable(0,0)
-    msg= Label(aboutWindow, text="Earley Parser v0.5\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
+    msg= Label(aboutWindow, text="Earley Parser v0.7\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
     msg.grid(row=0,column=0, columnspan=3)
     
     #im = Image.open('img\ufrgs.png').convert2byte()# open image and convert to byte format
@@ -161,8 +162,7 @@ def createaboutWindow():
     infImage.grid(row=1,column=0)
     
     img2 = PhotoImage(file="img\\ufrgs.gif")   # convert the Image object into a TkPhoto object
-    img2smaller=img2.subsample(2, 2)
-    ufrgsImage = Label(aboutWindow, image=img2smaller)    # put it in the display window
+    ufrgsImage = Label(aboutWindow, image=img2)    # put it in the display window
     ufrgsImage.grid(row=1,column=1)   
     
     aboutWindow.mainloop()
@@ -217,9 +217,8 @@ def getFilenameGen(fileText, genFrame, filePath, infoText):
 # Frame1 -> Frame
 # Frame2 -> Frame
 # window -> Tk()
-def genInfomercial(Frame1, Frame2, window):
+def genInfomercial(Frame1, window):
     Frame1.destroy()
-    Frame2.destroy()
 
     genFrame = Frame(window)
     genFrame.grid(row=0, column=0, ipadx=600, ipady=400, rowspan=8, columnspan=10)
@@ -277,7 +276,7 @@ w.title("Infomercial Generator")
 w["bg"] = "ghost white"
 
 # size of the window: Pt_Br (Largura x Altura + DistEsquerda + DistTopo) -> pixels
-w.geometry("660x410+200+200")
+w.geometry("941x621+200+200")
 
 mainFunc(w)
 
