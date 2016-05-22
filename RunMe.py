@@ -245,10 +245,10 @@ def WindowGen(frame, window):
     btFileOpen.place(x=668, y=82, height=25)
 
     # create the butwait!! image and make it a button
-    img = PhotoImage(file="img/butwait.gif")
+    img2 = PhotoImage(file="img/butwait.gif")
     btInfo = Button(genFrame, relief=GROOVE, command=partial(ActionGen, infomercialText))
-    btInfo.image = img
-    btInfo.configure(image=img)
+    btInfo.image = img2
+    btInfo.configure(image=img2)
     btInfo.place(x=260, y=380)
 
     # the return button
