@@ -28,14 +28,14 @@ def WindowMain(window):
     earleyImage.pack()
 
     # creating the buttons objects
-    bt1 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Recognize Language", fg="black", command=partial(WindowParse, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
-    bt2 = Button(introFrame, relief = GROOVE, font = "Courier 13 bold", text="Generate Infomercial!", fg="black", command=partial(WindowGen, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
-    bt3 = Button(window, relief = GROOVE, font = "Courier 12 bold", text="About", command=WindowAbout, background="LightBlue1", activebackground="LightBlue1")
+    bt1 = Button(introFrame, relief = GROOVE, font = "Courier 14 bold", text="Recognize Language", fg="black", command=partial(WindowParse, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
+    bt2 = Button(introFrame, relief = GROOVE, font = "Courier 14 bold", text="Generate Infomercial!", fg="black", command=partial(WindowGen, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
+    bt3 = Button(window, relief = GROOVE, font = "Courier 12 bold", bd="4", text="About", command=WindowAbout, background="LightBlue1", activebackground="LightBlue1")
 
     # put the buttons at their right positions
-    bt1.place(x=390, y=560)
-    bt2.place(x=600, y=560)
-    bt3.place(x=835, y=15)
+    bt1.place(x=370, y=570)
+    bt2.place(x=600, y=570)
+    bt3.place(x=832, y=13)
 
     introFrame.mainloop()
 
