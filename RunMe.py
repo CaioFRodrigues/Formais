@@ -4,10 +4,7 @@ from tkinter import *
 import tkinter.filedialog as fdialog
 import tkinter.messagebox as messagebox
 from functools import partial
-import libGrammarReader
-import libTextParser
-import libTextGen
-from libExcept import *
+import lib
 
 
 def WindowMain(window):
@@ -18,7 +15,7 @@ def WindowMain(window):
         window = Tk
     """
 
-    # creates the intro Frame block
+    # create the intro Frame block
     introFrame = Frame(window)
     introFrame.pack()
 
@@ -27,7 +24,7 @@ def WindowMain(window):
     earleyImage = Label(introFrame, image=img)
     earleyImage.pack()
 
-    # creating the buttons objects
+    # create the buttons objects
     bt1 = Button(introFrame, relief=GROOVE, font="Courier 13 bold", text="Recognize Language", fg="black", command=partial(WindowParse, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
     bt2 = Button(introFrame, relief=GROOVE, font="Courier 13 bold", text="Generate Infomercial!", fg="black", command=partial(WindowGen, introFrame, window), background="AntiqueWhite2", activebackground="AntiqueWhite2")
     bt3 = Button(window, relief=GROOVE, font="Courier 12 bold", text="About", command=WindowAbout, background="LightBlue1", activebackground="LightBlue1")
