@@ -328,7 +328,7 @@ def WindowAbout():
     AuxCenterWindow(aboutWindow)
     aboutWindow.title("About")
     aboutWindow.resizable(0, 0)
-    msg= Label(aboutWindow, font="Courier 13 bold", text="Earley Parser v0.8\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
+    msg = Label(aboutWindow, font="Courier 13 bold", text="Earley Parser v0.8\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
     msg.grid(row=0, column=0, columnspan=3)
 
     # INF image
