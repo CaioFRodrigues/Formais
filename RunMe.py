@@ -112,12 +112,12 @@ def WindowParse(frame, window):
     scr.config(command = showTreeArea.yview)
 
     # the same that was done with the current file label
-    labelQuestion = Label(recFrame, text="Enter your Language:", background="AntiqueWhite1", font="Courier 13 bold underline")
+    labelQuestion = Label(recFrame, text="Enter your phrase:", background="AntiqueWhite1", font="Courier 13 bold underline")
     labelQuestion.place(x=60, y=80)
 
     # create a new entry for the user to enter a valid or invalid text
-    qtText = Entry(recFrame, width=20, borderwidth="2", font="Courier 13 bold", selectbackground="coral1")
-    qtText.place(x=272, y=82)
+    qtText = Entry(recFrame, width=22, borderwidth="2", font="Courier 13 bold", selectbackground="coral1")
+    qtText.place(x=250, y=82)
 
     #creates the button that will handle getting the current file and parsing the user entered text
     btAccRecLan = Button(recFrame, text="OK", relief=GROOVE, command=partial(ActionParse, qtText, showTreeArea), font="Courier 13 bold", background="coral1", activebackground="coral1")
@@ -325,6 +325,7 @@ def WindowAbout():
     # create the about window as a top level widget
     aboutWindow = Toplevel()
     aboutWindow.geometry("440x280+600+150")
+    AuxCenterWindow(aboutWindow)
     aboutWindow.title("About")
     aboutWindow.resizable(0, 0)
     msg= Label(aboutWindow, font="Courier 13 bold", text="Earley Parser v0.8\nCriado pelos alunos: \nArateus Meneses\nCaio Fonseca Rodrigues\nDaniel Kelling Brum\nGuilherme Cattani de Castro")
@@ -343,6 +344,23 @@ def WindowAbout():
     aboutWindow.mainloop()
 
 
+def AuxCenterWindow(window):
+    """
+    Centers the window
+
+    Keyword arguments:
+        window = Tk
+    """
+
+    window.update_idletasks()
+    w = window.winfo_screenwidth()
+    h = window.winfo_screenheight()
+    size = tuple(int(_) for _ in window.geometry().split('+')[0].split('x'))
+    x = w/2 - size[0]/2
+    y = h/2 - size[1]/2
+    window.geometry("%dx%d+%d+%d" % (size + (x, y)))
+
+
 if __name__ == '__main__':
     # global grammar
     g = {}
@@ -355,6 +373,7 @@ if __name__ == '__main__':
     w.call('wm', 'iconphoto', w._w, icon)
     w["bg"] = "ghost white"
     w.geometry("941x621+200+200") # (width x height + leftMargin + topMargin) in pixels
+    AuxCenterWindow(w)
     WindowMain(w)
 
     w.mainloop()
