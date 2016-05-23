@@ -4,7 +4,10 @@ from tkinter import *
 import tkinter.filedialog as fdialog
 import tkinter.messagebox as messagebox
 from functools import partial
-import lib
+import libGrammarReader
+import libTextParser
+import libTextGen
+from libExcept import *
 
 
 def WindowMain(window):
@@ -113,12 +116,12 @@ def WindowParse(frame, window):
 
     # create a new entry for the user to enter a valid or invalid text
     qtText = Entry(recFrame, width=20, borderwidth="2", font="Courier 13 bold", selectbackground="coral1")
-    qtText.place(x=272, y=82)  
+    qtText.place(x=272, y=82)
 
     #creates the button that will handle getting the current file and parsing the user entered text
     btAccRecLan = Button(recFrame, text="OK", relief=GROOVE, command=partial(ActionParse, qtText, showTreeArea), font="Courier 13 bold", background="coral1", activebackground="coral1")
     btAccRecLan.place(x=480, y=82, height=25)
-    
+
     #the return button
     btReturn = Button(recFrame, text="←", relief=GROOVE, command=partial(ActionGotoMain, recFrame, window), font="Courier 15 bold", background="PaleTurquoise1", activebackground="PaleTurquoise1")
     btReturn.place(x=55, y=39)
@@ -140,7 +143,7 @@ def DialogGrammarParse(fileText):
     # call tkinter's filedialog that will handle the search for a new file
     filePath = fdialog.askopenfile(mode='r', defaultextension='txt', title="Find the grammar to be parsed...")
     filename = filePath.name
-    
+
     # try parsing the file
     try:
         g = libGrammarReader.parseGrammarFile(filename)
@@ -149,7 +152,7 @@ def DialogGrammarParse(fileText):
         fileText.insert('end', filename)
         fileText["state"] = DISABLED
 
-    # return the right error from the exception class if something goes wrong  
+    # return the right error from the exception class if something goes wrong
     except ParseError as error:
         g = {}
         messagebox.showerror("Error!", error.args[0])
@@ -182,7 +185,7 @@ def ActionParse(inputArea, outputArea):
         outputArea.insert(INSERT, outText)
         outputArea["state"] = DISABLED
 
-    # return the right error from the exception class if something goes wrong  
+    # return the right error from the exception class if something goes wrong
     except GrammarError:
         messagebox.showerror("Error!", "Invalid grammar!")
 
@@ -315,7 +318,7 @@ def WindowAbout():
         frame = Frame
         window = Tk
     """
-    
+
     # create the about window as a top level widget
     aboutWindow = Toplevel()
     aboutWindow.geometry("440x280+600+150")
@@ -332,7 +335,7 @@ def WindowAbout():
     # UFRGS image
     img2 = PhotoImage(file="img/ufrgs.gif")
     ufrgsImage = Label(aboutWindow, image=img2)
-    ufrgsImage.grid(row=1, column=1)   
+    ufrgsImage.grid(row=1, column=1)
 
     aboutWindow.mainloop()
 
