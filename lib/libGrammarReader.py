@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import re
-from libExcept import *
+from lib.libExcept import *
 
 
 """
@@ -88,7 +88,6 @@ def parseTerms(fp):
         return set(a)               # remove duplicates
 
     except:
-        # re-raise the exception to handle it in the caller
         raise
 
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import copy
-from libExcept import *
+from lib.libExcept import *
 
 
 """

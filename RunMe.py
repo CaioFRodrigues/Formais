@@ -4,10 +4,7 @@ from tkinter import *
 import tkinter.filedialog as fdialog
 import tkinter.messagebox as messagebox
 from functools import partial
-import libGrammarReader
-import libTextParser
-import libTextGen
-from libExcept import *
+import lib
 
 
 def WindowMain(window):
@@ -151,14 +148,14 @@ def DialogGrammarParse(fileText):
 
         # try parsing the file
         try:
-            g = libGrammarReader.parseGrammarFile(filename)
+            g = lib.parseGrammarFile(filename)
             fileText["state"] = NORMAL
             fileText.delete('1.0', END)
             fileText.insert('end', filename)
             fileText["state"] = DISABLED
 
         # return the right error from the exception class if something goes wrong
-        except ParseError as error:
+        except lib.ParseError as error:
             g = {}
             messagebox.showerror("Error!", error.args[0])
 
@@ -177,7 +174,7 @@ def ActionParse(inputArea, outputArea):
     # try parsing the text
     try:
         inText = inputArea.get()
-        acc, trees = libTextParser.parseText(g, inText)
+        acc, trees = lib.parseText(g, inText)
 
         if acc:
             outText = 'Text accepted!' + trees
@@ -191,7 +188,7 @@ def ActionParse(inputArea, outputArea):
         outputArea["state"] = DISABLED
 
     # return the right error from the exception class if something goes wrong
-    except GrammarError:
+    except lib.GrammarError:
         messagebox.showerror("Error!", "Invalid grammar!")
 
 
@@ -283,14 +280,14 @@ def DialogGrammarGen(fileText, infoText):
         filename = filePath.name
 
         try:
-            g = libGrammarReader.parseGrammarFile(filename)
+            g = lib.parseGrammarFile(filename)
             fileText["state"] = NORMAL
             fileText.delete('1.0', END)
             fileText.insert('end', filename)
             ActionGen(infoText)
             fileText["state"] = DISABLED
 
-        except ParseError as error:
+        except lib.ParseError as error:
             g = {}
             messagebox.showerror("Error!", error.args[0])
 
@@ -306,13 +303,13 @@ def ActionGen(infoText):
     global g
 
     try:
-        genText = libTextGen.genText(g)
+        genText = lib.genText(g)
         infoText["state"] = NORMAL
         infoText.delete('1.0', END)
         infoText.insert(INSERT, genText)
         infoText["state"] = DISABLED
 
-    except GrammarError:
+    except lib.GrammarError:
         messagebox.showerror("Error!", "Invalid grammar!")
 
 

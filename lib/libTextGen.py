@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import random
-from libExcept import *
+from lib.libExcept import *
 
 
 def genText(g):
