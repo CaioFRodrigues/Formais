@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from lib.libGrammarReader import *
-from lib.libTextParser import *
-from lib.libTextGen import *
+import lib.libGrammarReader
+import lib.libTextParser
+import lib.libTextGen
 from lib.libExcept import *

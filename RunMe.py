@@ -148,7 +148,7 @@ def DialogGrammarParse(fileText):
 
         # try parsing the file
         try:
-            g = lib.parseGrammarFile(filename)
+            g = lib.libGrammarReader.parseGrammarFile(filename)
             fileText["state"] = NORMAL
             fileText.delete('1.0', END)
             fileText.insert('end', filename)
@@ -174,7 +174,7 @@ def ActionParse(inputArea, outputArea):
     # try parsing the text
     try:
         inText = inputArea.get()
-        acc, trees = lib.parseText(g, inText)
+        acc, trees = lib.libTextParser.parseText(g, inText)
 
         if acc:
             outText = 'Text accepted!' + trees
@@ -280,7 +280,7 @@ def DialogGrammarGen(fileText, infoText):
         filename = filePath.name
 
         try:
-            g = lib.parseGrammarFile(filename)
+            g = lib.libGrammarReader.parseGrammarFile(filename)
             fileText["state"] = NORMAL
             fileText.delete('1.0', END)
             fileText.insert('end', filename)
@@ -303,7 +303,7 @@ def ActionGen(infoText):
     global g
 
     try:
-        genText = lib.genText(g)
+        genText = lib.libTextGen.genText(g)
         infoText["state"] = NORMAL
         infoText.delete('1.0', END)
         infoText.insert(INSERT, genText)
@@ -343,17 +343,18 @@ def WindowAbout():
     aboutWindow.mainloop()
 
 
-# global grammar
-g = {}
+if __name__ == '__main__':
+    # global grammar
+    g = {}
 
-# create window
-w = Tk()
-w.resizable(0, 0) # prevent resizing
-w.title("The Amazing Earley Parsing Machine!")
-icon = PhotoImage(file='img/icon.gif')
-w.call('wm', 'iconphoto', w._w, icon)
-w["bg"] = "ghost white"
-w.geometry("941x621+200+200") # (width x height + leftMargin + topMargin) in pixels
-WindowMain(w)
+    # create window
+    w = Tk()
+    w.resizable(0, 0) # prevent resizing
+    w.title("The Amazing Earley Parsing Machine!")
+    icon = PhotoImage(file='img/icon.gif')
+    w.call('wm', 'iconphoto', w._w, icon)
+    w["bg"] = "ghost white"
+    w.geometry("941x621+200+200") # (width x height + leftMargin + topMargin) in pixels
+    WindowMain(w)
 
-w.mainloop()
+    w.mainloop()
