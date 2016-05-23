@@ -350,6 +350,8 @@ g = {}
 w = Tk()
 w.resizable(0, 0) # prevent resizing
 w.title("The Amazing Earley Parsing Machine!")
+icon = PhotoImage(file='img/icon.gif')
+w.call('wm', 'iconphoto', w._w, icon)
 w["bg"] = "ghost white"
 w.geometry("941x621+200+200") # (width x height + leftMargin + topMargin) in pixels
 WindowMain(w)
