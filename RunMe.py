@@ -49,6 +49,9 @@ def ActionGotoMain(frame, window):
         window = Tk
     """
 
+    global g
+
+    g = {}
     frame.destroy()
     WindowMain(window)
 
@@ -89,6 +92,7 @@ def WindowParse(frame, window):
     fileText["state"] = DISABLED
 
     # create the search button
+    g = {}
     btFileOpen = Button(recFrame, text="Search", relief=GROOVE, command=partial(DialogGrammarParse, fileText), font="Courier 10 bold", background="coral1", activebackground="coral1")
     btFileOpen.place(x=668, y=112, height=25)
 
@@ -142,20 +146,21 @@ def DialogGrammarParse(fileText):
 
     # call tkinter's filedialog that will handle the search for a new file
     filePath = fdialog.askopenfile(mode='r', defaultextension='txt', title="Find the grammar to be parsed...")
-    filename = filePath.name
+    if filePath:
+        filename = filePath.name
 
-    # try parsing the file
-    try:
-        g = libGrammarReader.parseGrammarFile(filename)
-        fileText["state"] = NORMAL
-        fileText.delete('1.0', END)
-        fileText.insert('end', filename)
-        fileText["state"] = DISABLED
+        # try parsing the file
+        try:
+            g = libGrammarReader.parseGrammarFile(filename)
+            fileText["state"] = NORMAL
+            fileText.delete('1.0', END)
+            fileText.insert('end', filename)
+            fileText["state"] = DISABLED
 
-    # return the right error from the exception class if something goes wrong
-    except ParseError as error:
-        g = {}
-        messagebox.showerror("Error!", error.args[0])
+        # return the right error from the exception class if something goes wrong
+        except ParseError as error:
+            g = {}
+            messagebox.showerror("Error!", error.args[0])
 
 
 def ActionParse(inputArea, outputArea):
@@ -274,19 +279,20 @@ def DialogGrammarGen(fileText, infoText):
     global g
 
     filePath = fdialog.askopenfile(mode='r', defaultextension='txt', title="Find the grammar to be parsed...")
-    filename = filePath.name
+    if filePath:
+        filename = filePath.name
 
-    try:
-        g = libGrammarReader.parseGrammarFile(filename)
-        fileText["state"] = NORMAL
-        fileText.delete('1.0', END)
-        fileText.insert('end', filename)
-        ActionGen(infoText)
-        fileText["state"] = DISABLED
+        try:
+            g = libGrammarReader.parseGrammarFile(filename)
+            fileText["state"] = NORMAL
+            fileText.delete('1.0', END)
+            fileText.insert('end', filename)
+            ActionGen(infoText)
+            fileText["state"] = DISABLED
 
-    except ParseError as error:
-        g = {}
-        messagebox.showerror("Error!", error.args[0])
+        except ParseError as error:
+            g = {}
+            messagebox.showerror("Error!", error.args[0])
 
 
 def ActionGen(infoText):
